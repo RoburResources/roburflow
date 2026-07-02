@@ -12,9 +12,9 @@ module.exports = {
   		colors: {
   			robur: {
   				black: '#1A1A1A',
-  				gold: '#F5A800',
-  				goldDark: '#D89400',
-  				goldLight: '#FFF4DB'
+  				gold: '#FFC400',
+  				goldDark: '#E0A800',
+  				goldLight: '#FFF7DB'
   			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
