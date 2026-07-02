@@ -51,7 +51,7 @@ export default function Drivers() {
       </p>
 
       {drivers.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 text-center">
+        <div className="glass-card border-dashed p-10 text-center">
           <Truck className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <p className="text-slate-500">No drivers yet.</p>
         </div>
@@ -59,7 +59,7 @@ export default function Drivers() {
         <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {drivers.map((d) => (
             <StaggerItem key={d.id}>
-              <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm h-full">
+              <Pressable className="glass-card p-4 h-full">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-robur-black">{d.name}</h3>

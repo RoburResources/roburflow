@@ -12,7 +12,7 @@ import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 
 function Stat({ icon: Icon, label, value, accent }) {
   return (
-    <Pop className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+    <Pop className="glass-card p-4">
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${accent}`}>
         <Icon className="w-5 h-5" />
       </div>
@@ -77,7 +77,7 @@ export default function Dashboard() {
       {loading ? (
         <div className="text-slate-400 text-sm py-8 text-center">Loading…</div>
       ) : todaysJobs.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 text-center">
+        <div className="glass-card border-dashed p-10 text-center">
           <ListChecks className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <p className="text-slate-500 mb-4">No jobs scheduled for today.</p>
           <Link to="/jobs/new" className="inline-flex items-center gap-2 text-robur-goldDark font-semibold">
@@ -89,7 +89,7 @@ export default function Dashboard() {
           {todaysJobs.map((job) => (
             <StaggerItem key={job.id}>
               <Pressable>
-                <Link to={`/jobs/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <Link to={`/jobs/${job.id}`} className="block glass-card p-4 hover:shadow-lg transition-shadow">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-1">

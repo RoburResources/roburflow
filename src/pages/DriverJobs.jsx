@@ -51,7 +51,7 @@ export default function DriverJobs() {
           { to: "/quick-references", label: "Guides", icon: BookOpen },
           { to: "/incident-reporting", label: "Report", icon: ShieldAlert },
         ].map((q) => (
-          <Link key={q.to} to={q.to} className="flex flex-col items-center gap-1.5 bg-white rounded-2xl border border-slate-100 shadow-sm py-3">
+          <Link key={q.to} to={q.to} className="flex flex-col items-center gap-1.5 glass-card py-3">
             <q.icon className="w-5 h-5 text-robur-goldDark" />
             <span className="text-[11px] font-semibold text-robur-black">{q.label}</span>
           </Link>
@@ -61,7 +61,7 @@ export default function DriverJobs() {
       {loading ? (
         <div className="text-slate-400 text-sm py-8 text-center">Loading…</div>
       ) : todays.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 text-center">
+        <div className="glass-card border-dashed p-10 text-center">
           <ClipboardList className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <p className="text-slate-500">No jobs assigned for today.</p>
         </div>
@@ -70,7 +70,7 @@ export default function DriverJobs() {
           {todays.map((job) => (
             <StaggerItem key={job.id}>
               <motion.div whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
-                <Link to={`/job/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <Link to={`/job/${job.id}`} className="block glass-card p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-1">

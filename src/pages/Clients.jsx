@@ -56,7 +56,7 @@ export default function Clients() {
       <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       {clients.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 text-center">
+        <div className="glass-card border-dashed p-10 text-center">
           <Users className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <p className="text-slate-500">No clients yet.</p>
         </div>
@@ -64,7 +64,7 @@ export default function Clients() {
         <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {clients.map((c) => (
             <StaggerItem key={c.id}>
-              <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm h-full">
+              <Pressable className="glass-card p-4 h-full">
                 <div className="flex items-start justify-between">
                   <h3 className="font-bold text-robur-black">{c.name}</h3>
                   <div className="flex gap-1">
