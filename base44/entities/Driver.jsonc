@@ -1,0 +1,28 @@
+{
+  "name": "Driver",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Driver full name"
+    },
+    "email": {
+      "type": "string",
+      "description": "Driver login email (matches their user account)"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "vehicle_rego": {
+      "type": "string",
+      "description": "Default vehicle registration"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

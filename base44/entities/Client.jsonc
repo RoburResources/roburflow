@@ -1,0 +1,27 @@
+{
+  "name": "Client",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Client company or contact name"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email to send completed documents to"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "site_address": {
+      "type": "string",
+      "description": "Default site address"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

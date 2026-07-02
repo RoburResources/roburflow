@@ -1,0 +1,80 @@
+{
+  "name": "Job",
+  "type": "object",
+  "properties": {
+    "job_no": {
+      "type": "string",
+      "description": "Human readable job number e.g. JOB-0001"
+    },
+    "client_id": {
+      "type": "string",
+      "description": "Reference to Client entity"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "client_email": {
+      "type": "string"
+    },
+    "site_address": {
+      "type": "string"
+    },
+    "job_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the job is scheduled for"
+    },
+    "assigned_driver_id": {
+      "type": "string",
+      "description": "Reference to Driver entity"
+    },
+    "assigned_driver_name": {
+      "type": "string"
+    },
+    "required_documents": {
+      "type": "array",
+      "description": "Which document types are required for this job",
+      "items": {
+        "type": "string",
+        "enum": [
+          "service_docket",
+          "dmt",
+          "mgt"
+        ]
+      },
+      "default": [
+        "service_docket"
+      ]
+    },
+    "service_type": {
+      "type": "string",
+      "description": "e.g. Pickup, Swap, Deliver"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Admin notes / pre-known details for the driver"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "assigned",
+        "in_progress",
+        "submitted",
+        "sent"
+      ],
+      "default": "assigned"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "client_name",
+    "job_date"
+  ]
+}

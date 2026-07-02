@@ -1,0 +1,61 @@
+{
+  "name": "JobDocument",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "Reference to Job entity"
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": [
+        "service_docket",
+        "dmt",
+        "mgt",
+        "settlement_summary"
+      ]
+    },
+    "doc_no": {
+      "type": "string",
+      "description": "Auto number e.g. DMT 0001, MGT 0001"
+    },
+    "data": {
+      "type": "object",
+      "description": "All captured field values for this document, shape depends on doc_type",
+      "additionalProperties": true
+    },
+    "evidence_photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of captured service evidence photos"
+    },
+    "source_photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of source docket photos used for extraction"
+    },
+    "client_signature_url": {
+      "type": "string",
+      "description": "URL of captured client signature image"
+    },
+    "client_ack_name": {
+      "type": "string"
+    },
+    "pdf_url": {
+      "type": "string",
+      "description": "Generated branded PDF url"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "job_id",
+    "doc_type"
+  ]
+}

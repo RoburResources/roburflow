@@ -1,0 +1,17 @@
+{
+  "name": "Counter",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Counter name e.g. dmt, mgt, job, service_docket"
+    },
+    "value": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "key"
+  ]
+}

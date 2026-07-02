@@ -1,228 +1,86 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserPlus, Mail, Lock, Loader2 } from "lucide-react";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import AuthLayout from "@/components/AuthLayout";
-import GoogleIcon from "@/components/GoogleIcon";
-import { toast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
+import RoburLogo from "@/components/brand/RoburLogo";
 
 export default function Register() {
+  const [step, setStep] = useState("register");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showOtp, setShowOtp] = useState(false);
-  const [otpCode, setOtpCode] = useState("");
 
-  const handleSubmit = async (e) => {
+  const doRegister = async (e) => {
     e.preventDefault();
     setError("");
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
+    if (password !== confirm) { setError("Passwords do not match."); return; }
     setLoading(true);
     try {
       await base44.auth.register({ email, password });
-      setShowOtp(true);
+      setStep("otp");
     } catch (err) {
-      setError(err.message || "Registration failed");
+      setError(err?.message || "Could not register.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleVerify = async () => {
+  const doVerify = async (e) => {
+    e.preventDefault();
     setError("");
     setLoading(true);
     try {
-      const result = await base44.auth.verifyOtp({ email, otpCode });
-      if (result?.access_token) {
-        base44.auth.setToken(result.access_token);
-      }
+      const { access_token } = await base44.auth.verifyOtp({ email, otpCode: otp });
+      base44.auth.setToken(access_token);
       window.location.href = "/";
     } catch (err) {
-      setError(err.message || "Invalid verification code");
-    } finally {
+      setError(err?.message || "Invalid code.");
       setLoading(false);
     }
   };
 
-  const handleResend = async () => {
-    setError("");
-    try {
-      await base44.auth.resendOtp(email);
-      toast({
-        title: "Code sent",
-        description: "Check your email for the new code.",
-      });
-    } catch (err) {
-      setError(err.message || "Failed to resend code");
-    }
-  };
-
-  const handleGoogle = () => {
-    base44.auth.loginWithProvider("google", "/");
-  };
-
-  if (showOtp) {
-    return (
-      <AuthLayout
-        icon={Mail}
-        title="Verify your email"
-        subtitle={`We sent a code to ${email}`}
-      >
-        {error && (
-          <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
-            {error}
-          </div>
-        )}
-        <div className="flex justify-center mb-6">
-          <InputOTP
-            maxLength={6}
-            value={otpCode}
-            onChange={setOtpCode}
-            autoFocus
-            autoComplete="one-time-code"
-          >
-            <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-              <InputOTPSlot index={2} />
-              <InputOTPSlot index={3} />
-              <InputOTPSlot index={4} />
-              <InputOTPSlot index={5} />
-            </InputOTPGroup>
-          </InputOTP>
-        </div>
-        <Button
-          className="w-full h-12 font-medium"
-          onClick={handleVerify}
-          disabled={loading || otpCode.length < 6}
-        >
-          {loading ? (
+  return (
+    <div className="min-h-screen bg-robur-black flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
+        <div className="flex justify-center mb-8"><RoburLogo dark className="scale-125" /></div>
+        <div className="bg-white rounded-2xl p-6 shadow-2xl">
+          {step === "register" ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Verifying...
+              <h1 className="text-xl font-extrabold mb-6">Create account</h1>
+              <form onSubmit={doRegister} className="space-y-4">
+                <div><Label>Email</Label><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 h-11" /></div>
+                <div><Label>Password</Label><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="mt-1 h-11" /></div>
+                <div><Label>Confirm Password</Label><Input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required className="mt-1 h-11" /></div>
+                {error && <p className="text-sm text-red-600">{error}</p>}
+                <Button type="submit" disabled={loading} className="w-full h-11 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+                  {loading ? "Creating…" : "Create Account"}
+                </Button>
+              </form>
+              <p className="mt-4 text-sm text-center text-slate-500">
+                Already have an account? <Link to="/login" className="text-robur-goldDark font-semibold">Sign in</Link>
+              </p>
             </>
           ) : (
-            "Verify"
+            <>
+              <h1 className="text-xl font-extrabold mb-2">Verify your email</h1>
+              <p className="text-sm text-slate-500 mb-6">We sent a code to {email}</p>
+              <form onSubmit={doVerify} className="space-y-4">
+                <div><Label>Verification Code</Label><Input value={otp} onChange={(e) => setOtp(e.target.value)} required className="mt-1 h-11 tracking-widest text-center" /></div>
+                {error && <p className="text-sm text-red-600">{error}</p>}
+                <Button type="submit" disabled={loading} className="w-full h-11 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+                  {loading ? "Verifying…" : "Verify"}
+                </Button>
+                <button type="button" onClick={() => base44.auth.resendOtp(email)} className="w-full text-sm text-slate-500">Resend code</button>
+              </form>
+            </>
           )}
-        </Button>
-        <p className="text-center text-sm text-muted-foreground mt-4">
-          Didn't receive the code?{" "}
-          <button onClick={handleResend} className="text-primary font-medium hover:underline">
-            Resend
-          </button>
-        </p>
-      </AuthLayout>
-    );
-  }
-
-  return (
-    <AuthLayout
-      icon={UserPlus}
-      title="Create your account"
-      subtitle="Sign up to get started"
-      footer={
-        <>
-          Already have an account?{" "}
-          <Link to="/login" className="text-primary font-medium hover:underline">
-            Log in
-          </Link>
-        </>
-      }
-    >
-      <Button
-        variant="outline"
-        className="w-full h-12 text-sm font-medium mb-6"
-        onClick={handleGoogle}
-      >
-        <GoogleIcon className="w-5 h-5 mr-2" />
-        Continue with Google
-      </Button>
-
-      <div className="relative mb-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-3 text-muted-foreground">or</span>
         </div>
       </div>
-
-      {error && (
-        <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              autoFocus
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 h-12"
-              required
-            />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 h-12"
-              required
-            />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirm">Confirm Password</Label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="confirm"
-              type="password"
-              autoComplete="new-password"
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="pl-10 h-12"
-              required
-            />
-          </div>
-        </div>
-        <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
-          {loading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Creating account...
-            </>
-          ) : (
-            "Create account"
-          )}
-        </Button>
-      </form>
-    </AuthLayout>
+    </div>
   );
 }
