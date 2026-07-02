@@ -13,6 +13,18 @@
     "phone": {
       "type": "string"
     },
+    "contact_name": {
+      "type": "string",
+      "description": "On-site contact person name"
+    },
+    "contact_phone": {
+      "type": "string",
+      "description": "On-site contact phone number"
+    },
+    "site_name": {
+      "type": "string",
+      "description": "Name of the site / location"
+    },
     "site_address": {
       "type": "string",
       "description": "Default site address"
