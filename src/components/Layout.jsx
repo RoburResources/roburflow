@@ -91,7 +91,7 @@ export default function Layout() {
   // ---------- Driver shell: mobile-first, bottom nav ----------
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <header className="sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between shadow-lg select-none" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <RoburLogo dark />
           <button onClick={logout} aria-label="Sign out" className="text-white/70 hover:text-white">
@@ -109,7 +109,7 @@ export default function Layout() {
 
   // ---------- Admin shell: sidebar on desktop, top bar on mobile ----------
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen flex">
       <aside className="hidden md:flex w-64 flex-col bg-robur-black text-white sticky top-0 h-screen">
         <div className="px-5 py-5 border-b border-white/10">
           <RoburLogo dark />
