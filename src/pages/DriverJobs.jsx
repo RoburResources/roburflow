@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { MapPin, ChevronRight, CheckCircle2, Clock, ClipboardList } from "lucide-react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
+import { PageTransition, Stagger, StaggerItem, motion } from "@/components/motion/Motion";
 
 export default function DriverJobs() {
   const { user } = useCurrentUser();
@@ -32,7 +33,7 @@ export default function DriverJobs() {
   const done = jobs.filter((j) => j.status === "submitted" || j.status === "sent");
 
   return (
-    <div className="p-4 max-w-lg mx-auto">
+    <PageTransition className="p-4 max-w-lg mx-auto">
       <div className="mb-5">
         <h1 className="text-2xl font-extrabold text-robur-black">Today's Jobs</h1>
         <p className="text-sm text-slate-500">{format(new Date(), "EEEE, d MMMM")}</p>
@@ -46,41 +47,47 @@ export default function DriverJobs() {
           <p className="text-slate-500">No jobs assigned for today.</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <Stagger className="space-y-3">
           {todays.map((job) => (
-            <Link key={job.id} to={`/job/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm active:scale-[0.99] transition-transform">
-              <div className="flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    {job.status === "in_progress" ? <Clock className="w-4 h-4 text-blue-500" /> : <span className="w-2 h-2 rounded-full bg-robur-gold" />}
-                    <span className="font-bold text-robur-black truncate">{job.client_name}</span>
+            <StaggerItem key={job.id}>
+              <motion.div whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
+                <Link to={`/job/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        {job.status === "in_progress" ? <Clock className="w-4 h-4 text-blue-500" /> : <span className="w-2 h-2 rounded-full bg-robur-gold" />}
+                        <span className="font-bold text-robur-black truncate">{job.client_name}</span>
+                      </div>
+                      <p className="text-sm text-slate-500 truncate flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5 shrink-0" /> {job.site_address || "No address"}
+                      </p>
+                      <div className="mt-2"><DocTypeChips types={job.required_documents} /></div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-slate-300 shrink-0" />
                   </div>
-                  <p className="text-sm text-slate-500 truncate flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 shrink-0" /> {job.site_address || "No address"}
-                  </p>
-                  <div className="mt-2"><DocTypeChips types={job.required_documents} /></div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-slate-300 shrink-0" />
-              </div>
-            </Link>
+                </Link>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
 
       {done.length > 0 && (
         <div className="mt-8">
           <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wide mb-3">Completed</h2>
-          <div className="space-y-2">
+          <Stagger className="space-y-2">
             {done.map((job) => (
-              <div key={job.id} className="bg-white/70 rounded-xl p-3 border border-slate-100 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
-                <span className="text-sm text-slate-600 truncate flex-1">{job.client_name}</span>
-                <span className="text-xs text-slate-400">{job.job_date ? format(new Date(job.job_date), "d MMM") : ""}</span>
-              </div>
+              <StaggerItem key={job.id}>
+                <div className="bg-white/70 rounded-xl p-3 border border-slate-100 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+                  <span className="text-sm text-slate-600 truncate flex-1">{job.client_name}</span>
+                  <span className="text-xs text-slate-400">{job.job_date ? format(new Date(job.job_date), "d MMM") : ""}</span>
+                </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       )}
-    </div>
+    </PageTransition>
   );
 }

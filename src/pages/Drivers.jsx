@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { PageTransition, Stagger, StaggerItem, Pressable, motion } from "@/components/motion/Motion";
 
 const EMPTY = { name: "", email: "", phone: "", vehicle_rego: "", active: true };
 
@@ -36,12 +37,14 @@ export default function Drivers() {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-4xl mx-auto">
+    <PageTransition className="p-4 md:p-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-extrabold text-robur-black">Drivers</h1>
-        <Button onClick={openNew} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
-          <Plus className="w-5 h-5 mr-1" /> Add Driver
-        </Button>
+        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+          <Button onClick={openNew} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+            <Plus className="w-5 h-5 mr-1" /> Add Driver
+          </Button>
+        </motion.div>
       </div>
       <p className="text-sm text-slate-500 mb-6">
         Drivers log in with the email below. Invite them from the app members area so their login email matches.
@@ -53,27 +56,29 @@ export default function Drivers() {
           <p className="text-slate-500">No drivers yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {drivers.map((d) => (
-            <div key={d.id} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-robur-black">{d.name}</h3>
-                  {!d.active && <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">Inactive</span>}
+            <StaggerItem key={d.id}>
+              <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm h-full">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-robur-black">{d.name}</h3>
+                    {!d.active && <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">Inactive</span>}
+                  </div>
+                  <div className="flex gap-1">
+                    <button onClick={() => openEdit(d)} className="p-1.5 text-slate-400 hover:text-robur-black"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => remove(d.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                  </div>
                 </div>
-                <div className="flex gap-1">
-                  <button onClick={() => openEdit(d)} className="p-1.5 text-slate-400 hover:text-robur-black"><Pencil className="w-4 h-4" /></button>
-                  <button onClick={() => remove(d.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                <div className="mt-2 space-y-1 text-sm text-slate-500">
+                  {d.email && <div className="flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> {d.email}</div>}
+                  {d.phone && <div className="flex items-center gap-2"><Phone className="w-3.5 h-3.5" /> {d.phone}</div>}
+                  {d.vehicle_rego && <div className="flex items-center gap-2"><Truck className="w-3.5 h-3.5" /> {d.vehicle_rego}</div>}
                 </div>
-              </div>
-              <div className="mt-2 space-y-1 text-sm text-slate-500">
-                {d.email && <div className="flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> {d.email}</div>}
-                {d.phone && <div className="flex items-center gap-2"><Phone className="w-3.5 h-3.5" /> {d.phone}</div>}
-                {d.vehicle_rego && <div className="flex items-center gap-2"><Truck className="w-3.5 h-3.5" /> {d.vehicle_rego}</div>}
-              </div>
-            </div>
+              </Pressable>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -88,6 +93,6 @@ export default function Drivers() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </PageTransition>
   );
 }

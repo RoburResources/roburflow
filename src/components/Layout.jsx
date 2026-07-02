@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import RoburLogo from "@/components/brand/RoburLogo";
@@ -39,7 +40,9 @@ export default function Layout() {
           </button>
         </header>
         <main className="flex-1 pb-20">
-          <Outlet />
+          <AnimatePresence mode="wait">
+            <Outlet key={location.pathname} />
+          </AnimatePresence>
         </main>
       </div>
     );
@@ -87,7 +90,9 @@ export default function Layout() {
           <button onClick={logout}><LogOut className="w-5 h-5 text-white/70" /></button>
         </header>
         <main className="flex-1 pb-24 md:pb-0">
-          <Outlet />
+          <AnimatePresence mode="wait">
+            <Outlet key={location.pathname} />
+          </AnimatePresence>
         </main>
         {/* Mobile bottom nav */}
         <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-slate-200 flex justify-around px-1 py-2 no-scrollbar overflow-x-auto">

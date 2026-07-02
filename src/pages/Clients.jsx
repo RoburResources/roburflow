@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { PageTransition, Stagger, StaggerItem, Pressable, motion } from "@/components/motion/Motion";
 
 const EMPTY = { name: "", email: "", phone: "", site_address: "", notes: "" };
 
@@ -38,12 +39,14 @@ export default function Clients() {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-4xl mx-auto">
+    <PageTransition className="p-4 md:p-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-extrabold text-robur-black">Clients</h1>
-        <Button onClick={openNew} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
-          <Plus className="w-5 h-5 mr-1" /> Add Client
-        </Button>
+        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+          <Button onClick={openNew} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+            <Plus className="w-5 h-5 mr-1" /> Add Client
+          </Button>
+        </motion.div>
       </div>
 
       {clients.length === 0 ? (
@@ -52,24 +55,26 @@ export default function Clients() {
           <p className="text-slate-500">No clients yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {clients.map((c) => (
-            <div key={c.id} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
-              <div className="flex items-start justify-between">
-                <h3 className="font-bold text-robur-black">{c.name}</h3>
-                <div className="flex gap-1">
-                  <button onClick={() => openEdit(c)} className="p-1.5 text-slate-400 hover:text-robur-black"><Pencil className="w-4 h-4" /></button>
-                  <button onClick={() => remove(c.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+            <StaggerItem key={c.id}>
+              <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm h-full">
+                <div className="flex items-start justify-between">
+                  <h3 className="font-bold text-robur-black">{c.name}</h3>
+                  <div className="flex gap-1">
+                    <button onClick={() => openEdit(c)} className="p-1.5 text-slate-400 hover:text-robur-black"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => remove(c.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                  </div>
                 </div>
-              </div>
-              <div className="mt-2 space-y-1 text-sm text-slate-500">
-                {c.email && <div className="flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> {c.email}</div>}
-                {c.phone && <div className="flex items-center gap-2"><Phone className="w-3.5 h-3.5" /> {c.phone}</div>}
-                {c.site_address && <div className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5" /> {c.site_address}</div>}
-              </div>
-            </div>
+                <div className="mt-2 space-y-1 text-sm text-slate-500">
+                  {c.email && <div className="flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> {c.email}</div>}
+                  {c.phone && <div className="flex items-center gap-2"><Phone className="w-3.5 h-3.5" /> {c.phone}</div>}
+                  {c.site_address && <div className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5" /> {c.site_address}</div>}
+                </div>
+              </Pressable>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -85,6 +90,6 @@ export default function Clients() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </PageTransition>
   );
 }

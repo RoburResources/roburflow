@@ -6,6 +6,7 @@ import { Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import StatusBadge from "@/components/jobs/StatusBadge";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
+import { PageTransition, Stagger, StaggerItem, Pressable, motion } from "@/components/motion/Motion";
 
 const FILTERS = ["all", "assigned", "in_progress", "submitted", "sent"];
 const FILTER_LABELS = { all: "All", assigned: "Assigned", in_progress: "In Progress", submitted: "Submitted", sent: "Sent" };
@@ -32,12 +33,14 @@ export default function Jobs() {
   });
 
   return (
-    <div className="p-4 md:p-8 max-w-6xl mx-auto">
+    <PageTransition className="p-4 md:p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-extrabold text-robur-black">Jobs</h1>
-        <Link to="/jobs/new" className="inline-flex items-center gap-2 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold px-4 py-2.5 rounded-xl">
-          <Plus className="w-5 h-5" /> New Job
-        </Link>
+        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+          <Link to="/jobs/new" className="inline-flex items-center gap-2 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold px-4 py-2.5 rounded-xl">
+            <Plus className="w-5 h-5" /> New Job
+          </Link>
+        </motion.div>
       </div>
 
       <div className="relative mb-4">
@@ -66,9 +69,11 @@ export default function Jobs() {
           No jobs found.
         </div>
       ) : (
-        <div className="space-y-3">
+        <Stagger className="space-y-3">
           {filtered.map((job) => (
-            <Link key={job.id} to={`/jobs/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <StaggerItem key={job.id}>
+            <Pressable>
+            <Link to={`/jobs/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">
@@ -86,9 +91,11 @@ export default function Jobs() {
                 </div>
               </div>
             </Link>
+            </Pressable>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
-    </div>
+    </PageTransition>
   );
 }
