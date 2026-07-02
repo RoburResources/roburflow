@@ -154,4 +154,13 @@ button, nav, [role="navigation"], .tab-bar {
     filter: blur(12px);
     transform: scale(1.1);
   }
+
+  /* Soft white wash to lighten the background */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.55);
+  }
 }
