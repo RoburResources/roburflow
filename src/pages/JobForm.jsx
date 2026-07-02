@@ -22,6 +22,7 @@ export default function JobForm() {
   const [drivers, setDrivers] = useState([]);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
+    job_no: "",
     client_id: "",
     client_name: "",
     client_email: "",
@@ -91,6 +92,13 @@ export default function JobForm() {
       <h1 className="text-2xl font-extrabold text-robur-black mb-6">{editing ? "Edit Job" : "New Job"}</h1>
 
       <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-5">
+        {editing && (
+          <div>
+            <Label>Job Number</Label>
+            <Input value={form.job_no} onChange={(e) => set("job_no", e.target.value)} placeholder="Auto-generated — edit if needed" className="mt-1 h-11" />
+            <p className="text-[11px] text-slate-400 mt-1">Auto-numbered on creation. You can override it here.</p>
+          </div>
+        )}
         <div>
           <Label>Client</Label>
           {clients.length > 0 ? (

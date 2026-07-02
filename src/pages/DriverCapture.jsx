@@ -120,26 +120,35 @@ export default function DriverCapture() {
         const up = await base44.integrations.Core.UploadFile({ file: dataUrlToFile(signatureUrl, "signature.png") });
         sigUrl = up.file_url;
       }
-      for (const docType of docTypes) {
-        const st = docStates[docType];
-        const prefix = docType === "dmt" ? "dmt" : docType === "mgt" ? "mgt" : "service_docket";
-        const num = await nextNumber(prefix);
-        const docNo = docType === "service_docket" ? `SD ${num}` : `${DOC_TYPE_SHORT[docType]} ${num}`;
-        // Service docket is the client-facing one — show the pickup material photo as evidence
-        const evidence = docType === "service_docket" ? materialPhotos : [];
-        const pdfUrl = await generateDocumentPdf(docType, st.data, num, evidence, sigUrl, ackName);
+      // Service docket — client-facing, uses material photo as evidence
+      if (docTypes.includes("service_docket")) {
+        const num = await nextNumber("service_docket");
+        const pdfUrl = await generateDocumentPdf("service_docket", docStates.service_docket.data, num, materialPhotos, sigUrl, ackName);
         await base44.entities.JobDocument.create({
-          job_id: id,
-          doc_type: docType,
-          doc_no: docNo,
-          data: st.data,
-          evidence_photos: materialPhotos,
-          source_photos: [...bridgePhotos, ...floorPhotos],
-          client_signature_url: sigUrl,
-          client_ack_name: ackName,
-          pdf_url: pdfUrl,
-          completed: true,
+          job_id: id, doc_type: "service_docket", doc_no: `SD ${num}`,
+          data: docStates.service_docket.data, evidence_photos: materialPhotos,
+          source_photos: [], client_signature_url: sigUrl, client_ack_name: ackName,
+          pdf_url: pdfUrl, completed: true,
         });
+      }
+
+      // DMT + MGT — a single combined ticket. Bill To = Robur, Supplier = client.
+      if (docTypes.includes("dmt") || docTypes.includes("mgt")) {
+        const merged = { ...(docStates.dmt?.data || {}), ...(docStates.mgt?.data || {}) };
+        let dmtNo = null, mgtNo = null;
+        if (docTypes.includes("dmt")) dmtNo = String(await nextNumber("dmt")).padStart(4, "0");
+        if (docTypes.includes("mgt")) mgtNo = String(await nextNumber("mgt")).padStart(4, "0");
+        const client = { client_name: job.client_name, site_address: job.site_address, contact_name: job.contact_name, contact_phone: job.contact_phone };
+        const pdfUrl = await generateDocumentPdf("dmt", merged, dmtNo || mgtNo, [], sigUrl, ackName, { dmtNo, mgtNo, client });
+        // Record each requested type, both pointing at the one combined PDF
+        for (const dt of ["dmt", "mgt"].filter((t) => docTypes.includes(t))) {
+          const no = dt === "dmt" ? dmtNo : mgtNo;
+          await base44.entities.JobDocument.create({
+            job_id: id, doc_type: dt, doc_no: `${DOC_TYPE_SHORT[dt]} ${no}`,
+            data: merged, evidence_photos: [], source_photos: [...bridgePhotos, ...floorPhotos],
+            client_signature_url: sigUrl, client_ack_name: ackName, pdf_url: pdfUrl, completed: true,
+          });
+        }
       }
       await base44.entities.Job.update(id, { status: "submitted", submitted_at: new Date().toISOString() });
       confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, colors: ["#F5A800", "#1A1A1A"] });

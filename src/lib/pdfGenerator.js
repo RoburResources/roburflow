@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import { base44 } from "@/api/base44Client";
+import { getCompanyInfo, billToBlock } from "@/lib/companyInfo";
 
 const GOLD = [245, 168, 0];
 const BLACK = [26, 26, 26];
@@ -173,17 +174,73 @@ async function buildServiceDocket(d, docNo, evidencePhotos, signatureUrl, ackNam
   return uploadPdf(doc, `service-docket-${docNo || Date.now()}.pdf`);
 }
 
-// ---------- DMT ----------
-async function buildDMT(d, docNo, signatureUrl) {
+// ---------- Combined DMT + MGT (single document, two tickets) ----------
+// Robur templates render both the Direct Measurement Ticket and the Material
+// Grading Ticket on one page. Bill To is always Robur; Supplier is the client.
+function drawTicketHeader(doc, y, title, prefix, docNo) {
+  const W = doc.internal.pageSize.getWidth();
+  // Logo mark
+  doc.setFillColor(...BLACK);
+  doc.triangle(15, y, 15, y + 16, 27, y + 8, "F");
+  doc.setFillColor(...GOLD);
+  doc.triangle(15, y, 24, y, 15, y + 8, "F");
+  doc.setTextColor(...BLACK);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.text("ROBUR", 32, y + 8);
+  doc.setTextColor(...GOLD);
+  doc.setFontSize(8);
+  doc.text("R E S O U R C E S", 32, y + 13);
+  // Title + number
+  doc.setTextColor(...BLACK);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
+  doc.text(title, W - 15, y + 5, { align: "right" });
+  doc.setFontSize(18);
+  doc.setTextColor(...BLACK);
+  const numTxt = `${prefix} `;
+  doc.text(numTxt, W - 15 - doc.getTextWidth(String(docNo || "0001")), y + 14, { align: "right" });
+  doc.setTextColor(...GOLD);
+  doc.text(String(docNo || "0001"), W - 15, y + 14, { align: "right" });
+  doc.setDrawColor(...BLACK);
+  doc.setLineWidth(1);
+  doc.line(W - 15 - 120, y + 18, W - 25, y + 18);
+  doc.setDrawColor(...GOLD);
+  doc.line(W - 25, y + 18, W - 15, y + 18);
+  return y + 24;
+}
+
+function billToSupplier(doc, y, info, client) {
+  const W = doc.internal.pageSize.getWidth();
+  const half = (W - 30 - 10) / 2;
+  const bx = 15;
+  const sx = 15 + half + 10;
+  doc.setTextColor(...GREY);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.text("BILL TO", bx, y);
+  doc.text("SUPPLIER", sx, y);
+  doc.setTextColor(...BLACK);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  billToBlock(info).forEach((ln, i) => doc.text(String(ln), bx, y + 6 + i * 5));
+  const supLines = [client.client_name, client.site_address, client.contact_name, client.contact_phone].filter(Boolean);
+  supLines.forEach((ln, i) => doc.text(String(ln), sx, y + 6 + i * 5));
+  doc.setDrawColor(210, 210, 210);
+  doc.setLineWidth(0.3);
+  doc.line(bx, y + 24, bx + half, y + 24);
+  doc.line(sx, y + 24, sx + half, y + 24);
+  return y + 30;
+}
+
+async function buildCombinedTicket(d, dmtNo, mgtNo, signatureUrl, company, client) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const W = doc.internal.pageSize.getWidth();
-  drawHeader(doc, "DIRECT MEASUREMENT TICKET", null, `DMT ${docNo || "0001"}`);
-
-  let y = 50;
   const half = (W - 30 - 10) / 2;
-  labelledLine(doc, "Bill To", d.bill_to, 15, y, half);
-  labelledLine(doc, "Supplier", d.supplier, 15 + half + 10, y, half);
-  y += 18;
+
+  // ===== DMT (top half) =====
+  let y = drawTicketHeader(doc, 12, "DIRECT MEASUREMENT TICKET", "DMT", dmtNo || "0001");
+  y = billToSupplier(doc, y, company, client);
 
   // Line item table
   const cols = ["Description", "Qty (Net)", "UOM", "Unit Price", "Ext Price", "Total Price"];
@@ -258,29 +315,28 @@ async function buildDMT(d, docNo, signatureUrl) {
     doc.line(wx + ww * 0.75, ry, wx + ww * 0.75, ry + 8);
   });
 
-  y = leftY + 62;
+  y = leftY + 54;
   const sig = signatureUrl ? await loadImage(signatureUrl) : null;
   doc.setTextColor(...GREY);
   doc.setFontSize(7);
   doc.text("DRIVER", 15, y);
   doc.text("AUTHORISED BY", W / 2 + 5, y);
-  if (sig) { try { doc.addImage(sig, "PNG", 15, y + 2, 50, 16); } catch { /* ignore */ } }
+  if (sig) { try { doc.addImage(sig, "PNG", 15, y + 2, 45, 12); } catch { /* ignore */ } }
   doc.setDrawColor(...BLACK);
-  doc.line(15, y + 20, 90, y + 20);
-  doc.line(W / 2 + 5, y + 20, W - 15, y + 20);
+  doc.line(15, y + 14, 90, y + 14);
+  doc.line(W / 2 + 5, y + 14, W - 15, y + 14);
+  y += 20;
 
-  drawFooter(doc);
-  return uploadPdf(doc, `dmt-${docNo || Date.now()}.pdf`);
-}
+  // ===== Divider between the two tickets =====
+  doc.setDrawColor(160, 160, 160);
+  doc.setLineWidth(0.4);
+  doc.setLineDashPattern([2, 2], 0);
+  doc.line(15, y, W - 15, y);
+  doc.setLineDashPattern([], 0);
+  y += 6;
 
-// ---------- MGT ----------
-async function buildMGT(d, docNo, signatureUrl) {
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
-  const W = doc.internal.pageSize.getWidth();
-  drawHeader(doc, "MATERIAL GRADING TICKET", null, `MGT ${docNo || "0001"}`);
-
-  let y = 50;
-  const half = (W - 30 - 10) / 2;
+  // ===== MGT (bottom half, same page) =====
+  y = drawTicketHeader(doc, y, "MATERIAL GRADING TICKET", "MGT", mgtNo || "0001");
   labelledLine(doc, "Date", d.date, 15, y, half - 30);
   // Service checkboxes
   doc.setTextColor(...GREY);
@@ -303,12 +359,12 @@ async function buildMGT(d, docNo, signatureUrl) {
 
   labelledLine(doc, "Address / Site", d.address_site, 15 + half + 10, y, half);
   // Weights table left
-  const rows = [["Gross", d.weight_gross], ["Tare", d.weight_tare], ["Net", d.weight_net]];
+  const mgtRows = [["Gross", d.weight_gross], ["Tare", d.weight_tare], ["Net", d.weight_net]];
   doc.setTextColor(...GREY);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7);
   doc.text("WEIGHTS (TONNES)", 15, y);
-  rows.forEach((r, i) => {
+  mgtRows.forEach((r, i) => {
     const ry = y + 4 + i * 8;
     doc.setDrawColor(200, 200, 200);
     doc.rect(15, ry, half - 5, 8);
@@ -341,23 +397,40 @@ async function buildMGT(d, docNo, signatureUrl) {
   doc.setFontSize(9);
   const lines = doc.splitTextToSize(d.contamination || "", W - 34);
   doc.text(lines.slice(0, 2), 17, y + 8);
-  y += 26;
+  y += 22;
 
-  const sig = signatureUrl ? await loadImage(signatureUrl) : null;
+  // MGT: Document ID / Version / Authorised By row
   doc.setTextColor(...GREY);
   doc.setFontSize(7);
-  doc.text("AUTHORISED BY", W / 2 + 5, y);
-  if (sig) { try { doc.addImage(sig, "PNG", W / 2 + 5, y + 2, 50, 16); } catch { /* ignore */ } }
+  doc.setFont("helvetica", "bold");
+  doc.text("DOCUMENT ID", 15, y);
+  doc.text("VERSION", 15 + half * 0.55, y);
+  doc.text("AUTHORISED BY", 15 + half + 10, y);
+  doc.setTextColor(...BLACK);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.text(`MGT ${mgtNo || "0001"}`, 15, y + 6);
+  doc.text(String(d.version || "1.0"), 15 + half * 0.55, y + 6);
+  if (sig) { try { doc.addImage(sig, "PNG", 15 + half + 10, y - 2, 45, 14); } catch { /* ignore */ } }
+  doc.setDrawColor(200, 200, 200);
+  doc.line(15, y + 8, 15 + half * 0.5, y + 8);
+  doc.line(15 + half * 0.55, y + 8, 15 + half, y + 8);
   doc.setDrawColor(...BLACK);
-  doc.line(W / 2 + 5, y + 20, W - 15, y + 20);
+  doc.line(15 + half + 10, y + 8, W - 15, y + 8);
 
   drawFooter(doc);
-  return uploadPdf(doc, `mgt-${docNo || Date.now()}.pdf`);
+  return uploadPdf(doc, `ticket-${dmtNo || Date.now()}.pdf`);
 }
 
-export async function generateDocumentPdf(docType, data, docNo, evidencePhotos, signatureUrl, ackName) {
+// Generates PDFs for the required document types.
+// DMT and MGT are rendered together on a single combined ticket, so the first
+// of the two encountered triggers it and the second is skipped.
+export async function generateDocumentPdf(docType, data, docNo, evidencePhotos, signatureUrl, ackName, extras = {}) {
   if (docType === "service_docket") return buildServiceDocket(data, docNo, evidencePhotos, signatureUrl, ackName);
-  if (docType === "dmt") return buildDMT(data, docNo, signatureUrl);
-  if (docType === "mgt") return buildMGT(data, docNo, signatureUrl);
+  if (docType === "dmt" || docType === "mgt") {
+    const company = extras.company || (await getCompanyInfo());
+    const client = extras.client || {};
+    return buildCombinedTicket(data, extras.dmtNo || docNo, extras.mgtNo || docNo, signatureUrl, company, client);
+  }
   return null;
 }
