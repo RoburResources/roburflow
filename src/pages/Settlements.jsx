@@ -144,9 +144,9 @@ export default function Settlements() {
 
       <div className="glass-card p-5 mb-5">
         <div className="grid grid-cols-3 gap-4 text-center">
-          <div><div className="text-xs text-slate-500">Total Net</div><div className="text-lg font-extrabold text-robur-black">{totalNet.toFixed(2)} t</div></div>
-          <div><div className="text-xs text-slate-500">Total Payment</div><div className="text-lg font-extrabold text-robur-goldDark">${totalPayment.toFixed(2)}</div></div>
-          <div><div className="text-xs text-slate-500">Total Loads</div><div className="text-lg font-extrabold text-robur-black">{items.length}</div></div>
+          <div><div className="text-xs text-muted-foreground font-medium">Total Net</div><div className="text-lg font-semibold text-foreground tabular-mono">{totalNet.toFixed(2)} t</div></div>
+          <div><div className="text-xs text-muted-foreground font-medium">Total Payment</div><div className="text-lg font-semibold text-robur-goldDark tabular-mono">${totalPayment.toFixed(2)}</div></div>
+          <div><div className="text-xs text-muted-foreground font-medium">Total Loads</div><div className="text-lg font-semibold text-foreground tabular-mono">{items.length}</div></div>
         </div>
       </div>
 

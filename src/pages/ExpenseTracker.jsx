@@ -77,16 +77,16 @@ export default function ExpenseTracker() {
         icon={Wallet}
         actions={
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-            <Button onClick={() => { setForm(EMPTY); setOpen(true); }} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+            <Button onClick={() => { setForm(EMPTY); setOpen(true); }} className="cta-aurora hover:opacity-90 text-robur-black font-bold">
               <Plus className="w-5 h-5 mr-1" /> Log Expense
             </Button>
           </motion.div>
         }
       />
 
-      <div className="bg-robur-black text-white rounded-2xl p-4 mb-4 flex items-center justify-between">
-        <span className="text-sm text-white/70">{isAdmin ? "Total logged" : "Your total"}</span>
-        <span className="text-2xl font-extrabold">${total.toFixed(2)}</span>
+      <div className="glass-card p-4 mb-4 flex items-center justify-between">
+        <span className="text-sm text-muted-foreground font-medium">{isAdmin ? "Total logged" : "Your total"}</span>
+        <span className="text-2xl font-semibold text-foreground tabular-mono">${total.toFixed(2)}</span>
       </div>
 
       {expenses.length === 0 ? (
@@ -95,21 +95,21 @@ export default function ExpenseTracker() {
         <Stagger className="space-y-3">
           {expenses.map((e) => (
             <StaggerItem key={e.id}>
-              <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+              <Pressable className="glass-card glass-lift p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-robur-black capitalize">{e.category}</h3>
-                      {e.job_no && <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">{e.job_no}</span>}
+                      <h3 className="font-semibold text-foreground capitalize">{e.category}</h3>
+                      {e.job_no && <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/5 text-muted-foreground tabular-mono">{e.job_no}</span>}
                     </div>
-                    <div className="text-xs text-slate-400 mt-0.5">
+                    <div className="text-xs text-muted-foreground mt-0.5">
                       {e.expense_date ? format(new Date(e.expense_date), "d MMM yyyy") : "—"}
                       {isAdmin && e.driver_name ? ` · ${e.driver_name}` : ""}
                     </div>
-                    {e.description && <p className="mt-1 text-sm text-slate-500">{e.description}</p>}
+                    {e.description && <p className="mt-1 text-sm text-muted-foreground">{e.description}</p>}
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="font-extrabold text-robur-black">${(e.amount || 0).toFixed(2)}</div>
+                    <div className="font-semibold text-foreground tabular-mono">${(e.amount || 0).toFixed(2)}</div>
                   </div>
                 </div>
                 <div className="mt-3 flex items-center gap-2">
@@ -165,7 +165,7 @@ export default function ExpenseTracker() {
               <Label className="mb-2 block">Receipt</Label>
               <PhotoCapture photos={form.receipt_url ? [form.receipt_url] : []} onChange={(urls) => set("receipt_url", urls[urls.length - 1] || "")} label="Add Receipt" />
             </div>
-            <Button onClick={save} disabled={!form.amount} className="w-full h-11 bg-robur-black hover:bg-black text-white font-bold">Save Expense</Button>
+            <Button onClick={save} disabled={!form.amount} className="w-full h-11 cta-aurora hover:opacity-90 text-robur-black font-bold">Save Expense</Button>
           </div>
         </DialogContent>
       </Dialog>

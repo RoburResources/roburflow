@@ -64,7 +64,7 @@ export default function DriverCertifications() {
         icon={BadgeCheck}
         actions={
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-            <Button onClick={openNew} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+            <Button onClick={openNew} className="cta-aurora hover:opacity-90 text-robur-black font-bold">
               <Plus className="w-5 h-5 mr-1" /> Add Certification
             </Button>
           </motion.div>
@@ -79,18 +79,18 @@ export default function DriverCertifications() {
             const st = expiryStatus(c.expiry_date);
             return (
               <StaggerItem key={c.id}>
-                <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm h-full">
+                <Pressable className="glass-card glass-lift p-4 h-full">
                   <div className="flex items-start justify-between">
                     <div>
-                      <h3 className="font-bold text-robur-black">{c.driver_name}</h3>
-                      <div className="text-xs text-slate-400">{TYPE_LABEL[c.type]}{c.cert_number ? ` · ${c.cert_number}` : ""}</div>
+                      <h3 className="font-semibold text-foreground">{c.driver_name}</h3>
+                      <div className="text-xs text-muted-foreground">{TYPE_LABEL[c.type]}{c.cert_number ? ` · ${c.cert_number}` : ""}</div>
                     </div>
                     <div className="flex gap-1">
-                      <button onClick={() => openEdit(c)} className="p-1.5 text-slate-400 hover:text-robur-black"><Pencil className="w-4 h-4" /></button>
-                      <button onClick={() => remove(c.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                      <button onClick={() => openEdit(c)} className="p-1.5 text-muted-foreground hover:text-foreground"><Pencil className="w-4 h-4" /></button>
+                      <button onClick={() => remove(c.id)} className="p-1.5 text-muted-foreground hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   </div>
-                  <div className="mt-2 text-sm text-slate-500">
+                  <div className="mt-2 text-sm text-muted-foreground">
                     {c.expiry_date ? `Expires ${format(new Date(c.expiry_date), "d MMM yyyy")}` : "No expiry date"}
                   </div>
                   <div className="mt-2 flex items-center gap-2">
@@ -136,7 +136,7 @@ export default function DriverCertifications() {
               <PhotoCapture photos={form.document_url ? [form.document_url] : []} onChange={(urls) => set("document_url", urls[urls.length - 1] || "")} accept="image/*,application/pdf" allowCamera={false} />
             </div>
             <div><Label>Notes</Label><Textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} rows={2} className="mt-1" /></div>
-            <Button onClick={save} disabled={!form.driver_name} className="w-full h-11 bg-robur-black hover:bg-black text-white font-bold">Save</Button>
+            <Button onClick={save} disabled={!form.driver_name} className="w-full h-11 cta-aurora hover:opacity-90 text-robur-black font-bold">Save</Button>
           </div>
         </DialogContent>
       </Dialog>

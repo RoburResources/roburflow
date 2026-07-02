@@ -61,7 +61,7 @@ export default function IncidentReports() {
         icon={ShieldAlert}
         actions={
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-            <Button onClick={() => { setForm(EMPTY); setOpen(true); }} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+            <Button onClick={() => { setForm(EMPTY); setOpen(true); }} className="cta-aurora hover:opacity-90 text-robur-black font-bold">
               <Plus className="w-5 h-5 mr-1" /> Report
             </Button>
           </motion.div>
@@ -74,20 +74,20 @@ export default function IncidentReports() {
         <Stagger className="space-y-3">
           {reports.map((r) => (
             <StaggerItem key={r.id}>
-              <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+              <Pressable className="glass-card glass-lift p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <h3 className="font-bold text-robur-black">{r.title}</h3>
-                    <div className="text-xs text-slate-400">
+                    <h3 className="font-semibold text-foreground">{r.title}</h3>
+                    <div className="text-xs text-muted-foreground">
                       {r.reported_by_name || "—"} · {format(new Date(r.created_date), "d MMM yyyy, HH:mm")}
                       {r.location ? ` · ${r.location}` : ""}
                     </div>
                   </div>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full capitalize shrink-0 ${SEV_STYLE[r.severity]}`}>{r.severity}</span>
                 </div>
-                {r.description && <p className="mt-2 text-sm text-slate-500 whitespace-pre-wrap">{r.description}</p>}
+                {r.description && <p className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">{r.description}</p>}
                 <div className="mt-3 flex items-center gap-2">
-                  <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full capitalize">{r.type.replace("_", " ")}</span>
+                  <span className="text-[10px] bg-black/5 text-muted-foreground px-2 py-0.5 rounded-full capitalize">{r.type.replace("_", " ")}</span>
                   {isAdmin ? (
                     <Select value={r.status} onValueChange={(v) => setStatus(r.id, v)}>
                       <SelectTrigger className="h-7 w-36 text-xs ml-auto"><SelectValue /></SelectTrigger>
@@ -126,7 +126,7 @@ export default function IncidentReports() {
             </div>
             <div><Label>Location</Label><Input value={form.location} onChange={(e) => set("location", e.target.value)} className="mt-1 h-11" /></div>
             <div><Label>Description</Label><Textarea value={form.description} onChange={(e) => set("description", e.target.value)} rows={4} className="mt-1" /></div>
-            <Button onClick={submit} disabled={!form.title} className="w-full h-11 bg-robur-black hover:bg-black text-white font-bold">Submit Report</Button>
+            <Button onClick={submit} disabled={!form.title} className="w-full h-11 cta-aurora hover:opacity-90 text-robur-black font-bold">Submit Report</Button>
           </div>
         </DialogContent>
       </Dialog>

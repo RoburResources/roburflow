@@ -90,7 +90,7 @@ export default function SafetyBriefings() {
         icon={ShieldCheck}
         actions={isAdmin && (
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-            <Button onClick={() => { setForm(EMPTY); setOpen(true); }} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+            <Button onClick={() => { setForm(EMPTY); setOpen(true); }} className="cta-aurora hover:opacity-90 text-robur-black font-bold">
               <Plus className="w-5 h-5 mr-1" /> New Briefing
             </Button>
           </motion.div>
@@ -107,29 +107,29 @@ export default function SafetyBriefings() {
             const acked = hasAcked(b.id);
             return (
               <StaggerItem key={b.id}>
-                <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <Pressable className="glass-card glass-lift p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-bold text-robur-black">{b.title}</h3>
+                        <h3 className="font-semibold text-foreground">{b.title}</h3>
                         <span className={`text-[10px] px-2 py-0.5 rounded-full capitalize ${CAT_STYLE[b.category]}`}>{b.category}</span>
                         {b.mandatory && <span className="text-[10px] px-2 py-0.5 rounded-full bg-robur-goldLight text-robur-goldDark font-semibold">Mandatory</span>}
                       </div>
-                      <div className="text-xs text-slate-400 mt-0.5">{format(new Date(b.created_date), "d MMM yyyy")}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{format(new Date(b.created_date), "d MMM yyyy")}</div>
                     </div>
                     {isAdmin && (
-                      <button onClick={() => remove(b.id)} aria-label={`Delete briefing ${b.title}`} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                      <button onClick={() => remove(b.id)} aria-label={`Delete briefing ${b.title}`} className="p-1.5 text-muted-foreground hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
                     )}
                   </div>
-                  {b.body && <p className="mt-2 text-sm text-slate-500 whitespace-pre-wrap">{b.body}</p>}
+                  {b.body && <p className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">{b.body}</p>}
 
                   <div className="mt-3 flex items-center justify-between">
                     {isAdmin ? (
-                      <span className="text-xs text-slate-400">{ackCount(b.id)} acknowledgement{ackCount(b.id) === 1 ? "" : "s"}</span>
+                      <span className="text-xs text-muted-foreground"><span className="tabular-mono">{ackCount(b.id)}</span> acknowledgement{ackCount(b.id) === 1 ? "" : "s"}</span>
                     ) : acked ? (
                       <span className="flex items-center gap-1.5 text-sm font-semibold text-emerald-600"><CheckCircle2 className="w-4 h-4" /> Acknowledged</span>
                     ) : (
-                      <Button onClick={() => acknowledge(b)} className="h-9 bg-robur-black hover:bg-black text-white font-bold">
+                      <Button onClick={() => acknowledge(b)} className="h-9 cta-aurora hover:opacity-90 text-robur-black font-bold">
                         <CheckCircle2 className="w-4 h-4 mr-1.5" /> I Acknowledge
                       </Button>
                     )}
@@ -155,11 +155,11 @@ export default function SafetyBriefings() {
               </Select>
             </div>
             <div><Label>Content</Label><Textarea value={form.body} onChange={(e) => set("body", e.target.value)} rows={5} className="mt-1" /></div>
-            <label className="flex items-center gap-2 text-sm text-slate-600">
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
               <Checkbox checked={form.mandatory} onCheckedChange={(v) => set("mandatory", v)} />
               Mandatory acknowledgement before shift
             </label>
-            <Button onClick={save} disabled={!form.title} className="w-full h-11 bg-robur-black hover:bg-black text-white font-bold">Post Briefing</Button>
+            <Button onClick={save} disabled={!form.title} className="w-full h-11 cta-aurora hover:opacity-90 text-robur-black font-bold">Post Briefing</Button>
           </div>
         </DialogContent>
       </Dialog>

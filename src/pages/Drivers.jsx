@@ -39,14 +39,14 @@ export default function Drivers() {
   return (
     <PageTransition className="p-4 md:p-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-extrabold text-robur-black">Drivers</h1>
+        <h1 className="text-2xl font-extrabold text-foreground tracking-tighter">Drivers</h1>
         <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-          <Button onClick={openNew} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+          <Button onClick={openNew} className="cta-aurora hover:opacity-90 text-robur-black font-bold">
             <Plus className="w-5 h-5 mr-1" /> Add Driver
           </Button>
         </motion.div>
       </div>
-      <p className="text-sm text-slate-500 mb-6">
+      <p className="text-sm text-muted-foreground mb-6">
         Drivers log in with the email below. Invite them from the app members area so their login email matches.
       </p>
 

@@ -57,7 +57,7 @@ export default function MaintenanceSchedule() {
         icon={Wrench}
         actions={
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-            <Button onClick={openNew} className="bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
+            <Button onClick={openNew} className="cta-aurora hover:opacity-90 text-robur-black font-bold">
               <Plus className="w-5 h-5 mr-1" /> Log Service
             </Button>
           </motion.div>
@@ -70,18 +70,18 @@ export default function MaintenanceSchedule() {
         <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {records.map((r) => (
             <StaggerItem key={r.id}>
-              <Pressable className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm h-full">
+              <Pressable className="glass-card glass-lift p-4 h-full">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-bold text-robur-black">{r.vehicle_rego}</h3>
-                    <div className="text-xs text-slate-400">{r.service_type || "Service"}</div>
+                    <h3 className="font-semibold text-foreground">{r.vehicle_rego}</h3>
+                    <div className="text-xs text-muted-foreground">{r.service_type || "Service"}</div>
                   </div>
                   <div className="flex gap-1">
-                    <button onClick={() => openEdit(r)} className="p-1.5 text-slate-400 hover:text-robur-black"><Pencil className="w-4 h-4" /></button>
-                    <button onClick={() => remove(r.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                    <button onClick={() => openEdit(r)} className="p-1.5 text-muted-foreground hover:text-foreground"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => remove(r.id)} className="p-1.5 text-muted-foreground hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 </div>
-                <div className="mt-2 space-y-1 text-sm text-slate-500">
+                <div className="mt-2 space-y-1 text-sm text-muted-foreground">
                   <div>Serviced: {r.service_date ? format(new Date(r.service_date), "d MMM yyyy") : "—"}</div>
                   {r.next_service_date && (
                     <div className="flex items-center gap-1">
@@ -123,7 +123,7 @@ export default function MaintenanceSchedule() {
               </Select>
             </div>
             <div><Label>Notes</Label><Textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} rows={2} className="mt-1" /></div>
-            <Button onClick={save} disabled={!form.vehicle_rego} className="w-full h-11 bg-robur-black hover:bg-black text-white font-bold">Save</Button>
+            <Button onClick={save} disabled={!form.vehicle_rego} className="w-full h-11 cta-aurora hover:opacity-90 text-robur-black font-bold">Save</Button>
           </div>
         </DialogContent>
       </Dialog>

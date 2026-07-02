@@ -35,13 +35,13 @@ export default function ClientFeedback() {
       <PageHeader title="Client Feedback" subtitle="Ratings and comments submitted by clients." icon={MessageSquare} />
 
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
-          <div className="text-xs text-slate-400">Average rating</div>
-          <div className="flex items-center gap-2 mt-1"><span className="text-2xl font-extrabold text-robur-black">{avg}</span><Star className="w-5 h-5 fill-robur-gold text-robur-gold" /></div>
+        <div className="glass-card p-4">
+          <div className="text-xs text-muted-foreground font-medium">Average rating</div>
+          <div className="flex items-center gap-2 mt-1"><span className="text-2xl font-semibold text-foreground tabular-mono">{avg}</span><Star className="w-5 h-5 fill-robur-gold text-robur-gold" /></div>
         </div>
-        <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
-          <div className="text-xs text-slate-400">Total reviews</div>
-          <div className="text-2xl font-extrabold text-robur-black mt-1">{feedback.length}</div>
+        <div className="glass-card p-4">
+          <div className="text-xs text-muted-foreground font-medium">Total reviews</div>
+          <div className="text-2xl font-semibold text-foreground mt-1 tabular-mono">{feedback.length}</div>
         </div>
       </div>
 
@@ -51,18 +51,18 @@ export default function ClientFeedback() {
         <Stagger className="space-y-3">
           {feedback.map((f) => (
             <StaggerItem key={f.id}>
-              <Pressable className={`bg-white rounded-2xl p-4 border shadow-sm ${f.reviewed ? "border-slate-100" : "border-robur-gold/40"}`}>
+              <Pressable className={`glass-card glass-lift p-4 ${f.reviewed ? "" : "ring-1 ring-robur-gold/40"}`}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-robur-black">{f.client_name}</h3>
-                      {f.job_no && <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">{f.job_no}</span>}
+                      <h3 className="font-semibold text-foreground">{f.client_name}</h3>
+                      {f.job_no && <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/5 text-muted-foreground tabular-mono">{f.job_no}</span>}
                     </div>
-                    <div className="text-xs text-slate-400 mt-0.5">{format(new Date(f.created_date), "d MMM yyyy")}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{format(new Date(f.created_date), "d MMM yyyy")}</div>
                   </div>
                   <Stars n={f.rating} />
                 </div>
-                {f.comment && <p className="mt-2 text-sm text-slate-500 whitespace-pre-wrap">{f.comment}</p>}
+                {f.comment && <p className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">{f.comment}</p>}
                 {!f.reviewed && (
                   <Button onClick={() => markReviewed(f.id)} variant="outline" className="mt-3 h-8 text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Mark reviewed
