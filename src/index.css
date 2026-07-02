@@ -142,9 +142,20 @@ button, nav, [role="navigation"], .tab-bar {
   }
 
   body {
-    @apply text-foreground font-body;
+    @apply text-foreground font-body antialiased;
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv11", "ss01";
+    letter-spacing: -0.011em;
+  }
+
+  /* Sleek, tight display type — headings sit crisper with negative tracking */
+  h1, h2, h3, h4 {
+    letter-spacing: -0.025em;
+    font-feature-settings: "cv11", "ss01";
   }
 
   /* Blurred fixed background layer behind all app content */
