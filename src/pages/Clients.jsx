@@ -7,8 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PageTransition, Stagger, StaggerItem, Pressable, motion } from "@/components/motion/Motion";
+import RateCardEditor from "@/components/clients/RateCardEditor";
 
-const EMPTY = { name: "", email: "", phone: "", site_address: "", notes: "" };
+const EMPTY = { name: "", email: "", phone: "", site_address: "", notes: "", rate_card: [] };
 
 export default function Clients() {
   const [clients, setClients] = useState([]);
@@ -78,13 +79,14 @@ export default function Clients() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingId ? "Edit Client" : "Add Client"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
             <div><Label>Name</Label><Input value={form.name} onChange={(e) => set("name", e.target.value)} className="mt-1 h-11" /></div>
             <div><Label>Email</Label><Input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className="mt-1 h-11" /></div>
             <div><Label>Phone</Label><Input value={form.phone} onChange={(e) => set("phone", e.target.value)} className="mt-1 h-11" /></div>
             <div><Label>Site Address</Label><Input value={form.site_address} onChange={(e) => set("site_address", e.target.value)} className="mt-1 h-11" /></div>
+            <RateCardEditor value={form.rate_card} onChange={(v) => set("rate_card", v)} />
             <div><Label>Notes</Label><Textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} rows={2} className="mt-1" /></div>
             <Button onClick={save} disabled={!form.name} className="w-full h-11 bg-robur-black hover:bg-black text-white font-bold">Save</Button>
           </div>

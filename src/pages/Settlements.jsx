@@ -24,10 +24,21 @@ export default function Settlements() {
     });
   }, []);
 
+  const rateFor = (client, material) => {
+    if (!client?.rate_card || !material) return null;
+    const m = String(material).trim().toLowerCase();
+    const hit = client.rate_card.find((r) => String(r.material || "").trim().toLowerCase() === m);
+    return hit ? parseFloat(hit.rate) : null;
+  };
+
   const buildFromRange = async () => {
-    // Pull jobs in range to map created docs to dates
-    const jobs = await base44.entities.Job.list("-job_date", 500);
+    // Pull jobs + clients so we can price each ticket from the client's rate card
+    const [jobs, clients] = await Promise.all([
+      base44.entities.Job.list("-job_date", 500),
+      base44.entities.Client.list("-created_date", 500),
+    ]);
     const jobById = Object.fromEntries(jobs.map((j) => [j.id, j]));
+    const clientById = Object.fromEntries(clients.map((c) => [c.id, c]));
     const inRange = docs.filter((d) => {
       const j = jobById[d.job_id];
       if (!j?.job_date) return false;
@@ -35,12 +46,26 @@ export default function Settlements() {
     });
     const rows = inRange.map((d) => {
       const data = d.data || {};
-      const net = data.weight_net || "";
-      const amount = data.total_price || data.amount_aud || "";
+      const j = jobById[d.job_id];
+      const client = j ? clientById[j.client_id] : null;
       const material = data.description || data.material_grade || "";
-      return { ref: d.doc_no, material, net_weight: net, rate: data.unit_price || "", amount };
+      const net = parseFloat(data.weight_net) || 0;
+      // Prefer the client's rate card; fall back to any rate captured on the ticket
+      const rate = rateFor(client, material) ?? (parseFloat(data.unit_price) || 0);
+      const amount = rate && net ? (rate * net).toFixed(2) : (data.total_price || data.amount_aud || "");
+      return { ref: d.doc_no, material, net_weight: data.weight_net || "", rate: rate || "", amount };
     });
     setItems(rows);
+
+    // Auto-fill the header from the job(s) in range — payment reference = job number
+    const firstJob = inRange.map((d) => jobById[d.job_id]).find(Boolean);
+    if (firstJob) {
+      setMeta((m) => ({
+        ...m,
+        paid_to: m.paid_to || firstJob.client_name || "",
+        payment_reference: m.payment_reference || firstJob.job_no || "",
+      }));
+    }
   };
 
   const updateItem = (i, k, v) => setItems((list) => list.map((it, idx) => (idx === i ? { ...it, [k]: v } : it)));

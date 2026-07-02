@@ -29,6 +29,23 @@
       "type": "string",
       "description": "Default site address"
     },
+    "rate_card": {
+      "type": "array",
+      "description": "Per-material pricing used to auto-calculate settlement amounts",
+      "items": {
+        "type": "object",
+        "properties": {
+          "material": {
+            "type": "string",
+            "description": "Material name / grade"
+          },
+          "rate": {
+            "type": "number",
+            "description": "Rate in AUD per tonne"
+          }
+        }
+      }
+    },
     "notes": {
       "type": "string"
     },
