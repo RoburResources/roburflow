@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import RoburLogo from "@/components/brand/RoburLogo";
+import AdminGlassToolbar from "@/components/AdminGlassToolbar";
 import {
   LayoutDashboard, ListChecks, Users, Truck, FileText, LogOut, Receipt,
   Archive, ScrollText, LayoutTemplate, Settings2, BarChart3, Boxes,
@@ -77,6 +78,7 @@ const mobileNav = [
 export default function Layout() {
   const { user, loading, isAdmin } = useCurrentUser();
   const location = useLocation();
+  const [navExpanded, setNavExpanded] = useState(false);
 
   if (loading) {
     return (
@@ -107,49 +109,23 @@ export default function Layout() {
     );
   }
 
-  // ---------- Admin shell: sidebar on desktop, top bar on mobile ----------
+  // ---------- Admin shell: floating glass toolbar on desktop, top bar on mobile ----------
   return (
     <div className="min-h-screen flex">
-      <aside className="hidden md:flex w-64 flex-col bg-robur-black text-white sticky top-0 h-screen">
-        <div className="px-5 py-5 border-b border-white/10">
-          <RoburLogo showText={false} />
+      {/* Floating glass toolbar — sits inset, in line with the main cards, expands on hover */}
+      <div className="hidden md:block fixed left-4 top-6 bottom-6 z-30 pointer-events-none">
+        <div className="h-full max-h-[calc(100vh-3rem)] pointer-events-auto">
+          <AdminGlassToolbar
+            groups={adminNavGroups}
+            user={user}
+            onLogout={logout}
+            expanded={navExpanded}
+            onExpandedChange={setNavExpanded}
+          />
         </div>
-        <nav className="flex-1 p-3 space-y-4 overflow-y-auto thin-scroll fade-edges select-none">
-          {adminNavGroups.map((group) => (
-            <div key={group.label}>
-              <div className="px-4 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/30">{group.label}</div>
-              <div className="space-y-1">
-                {group.items.map((item) => {
-                  const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
-                  return (
-                    <Link
-                      key={item.to}
-                      to={item.to}
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                        active ? "bg-robur-gold text-robur-black" : "text-white/70 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      <item.icon className="w-5 h-5 shrink-0" />
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </nav>
-        <div className="p-3 border-t border-white/10">
-          <div className="px-4 py-2 text-xs text-white/50 truncate">{user?.email}</div>
-          <button
-            onClick={logout}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white w-full"
-          >
-            <LogOut className="w-5 h-5" /> Sign Out
-          </button>
-        </div>
-      </aside>
+      </div>
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 md:pl-[92px]">
         {/* Mobile top bar */}
         <header className="md:hidden sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between select-none" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <RoburLogo showText={false} />
