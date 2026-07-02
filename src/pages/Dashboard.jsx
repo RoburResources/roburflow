@@ -50,7 +50,7 @@ export default function Dashboard() {
           <p className="text-sm text-muted-foreground">{format(new Date(), "EEEE, d MMMM yyyy")}</p>
         </div>
         <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-          <Link to="/jobs/new" className="cta-aurora inline-flex items-center gap-2 text-robur-black font-bold px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+          <Link to="/jobs/new" className="cta-aurora glow-gold-box inline-flex items-center gap-2 text-robur-black font-bold px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <Plus className="w-5 h-5" /> New Job
           </Link>
         </motion.div>

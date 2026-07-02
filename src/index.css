@@ -251,4 +251,37 @@ button, nav, [role="navigation"], .tab-bar {
     outline: none;
     box-shadow: 0 0 0 2px rgba(255, 196, 0, 0.30), 0 0 0 4px rgba(255, 196, 0, 0.12);
   }
+
+  /* Gold neon glow — soft radiant halo for gold icons, rings, charts & CTAs.
+     Mirrors the purple ring reference: a diffuse luminous aura around the element. */
+  .glow-gold {
+    filter: drop-shadow(0 0 6px rgba(255, 196, 0, 0.55))
+            drop-shadow(0 0 16px rgba(255, 196, 0, 0.35));
+  }
+  /* Softer variant for larger/filled surfaces where a box-shadow reads better than a drop-shadow */
+  .glow-gold-box {
+    box-shadow:
+      0 0 12px rgba(255, 196, 0, 0.45),
+      0 0 32px rgba(255, 196, 0, 0.25);
+  }
+  /* Text glow for gold numerals / headings */
+  .glow-gold-text {
+    text-shadow:
+      0 0 8px rgba(255, 196, 0, 0.55),
+      0 0 20px rgba(255, 196, 0, 0.30);
+  }
+  /* Gentle breathing pulse for hero elements */
+  .glow-gold-pulse {
+    animation: glowGoldPulse 2.6s ease-in-out infinite;
+  }
+  @keyframes glowGoldPulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 6px rgba(255, 196, 0, 0.45))
+              drop-shadow(0 0 14px rgba(255, 196, 0, 0.25));
+    }
+    50% {
+      filter: drop-shadow(0 0 10px rgba(255, 196, 0, 0.70))
+              drop-shadow(0 0 26px rgba(255, 196, 0, 0.45));
+    }
+  }
 }

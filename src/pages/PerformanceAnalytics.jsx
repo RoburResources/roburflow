@@ -9,8 +9,8 @@ import PageHeader from "@/components/shared/PageHeader";
 function Stat({ icon: Icon, label, value, accent }) {
   return (
     <Pop className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
-      <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-2 ${accent}`}>
-        <Icon className="w-4 h-4" />
+      <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-2 ${accent} ${accent?.includes("gold") ? "glow-gold-box" : ""}`}>
+        <Icon className={`w-4 h-4 ${accent?.includes("gold") ? "glow-gold" : ""}`} />
       </div>
       <div className="text-2xl font-extrabold text-robur-black">{value}</div>
       <div className="text-xs text-slate-400">{label}</div>
@@ -77,7 +77,7 @@ export default function PerformanceAnalytics() {
             <XAxis dataKey="day" tick={{ fontSize: 11 }} stroke="#94a3b8" />
             <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="#94a3b8" />
             <Tooltip />
-            <Line type="monotone" dataKey="documents" stroke="#E0A800" strokeWidth={2.5} dot={{ r: 3 }} />
+            <Line type="monotone" dataKey="documents" stroke="#FFC400" strokeWidth={2.5} dot={{ r: 3 }} className="glow-gold" />
           </LineChart>
         </ResponsiveContainer>
       </div>
