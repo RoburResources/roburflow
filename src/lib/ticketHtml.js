@@ -1,5 +1,4 @@
 import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
 import { base44 } from "@/api/base44Client";
 
 const LOGO_DARK = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/71b5125fc_03_primary_horizontal_dark_transparent.png";
@@ -217,13 +216,8 @@ export async function buildCombinedTicketHtml(d, dmtNo, mgtNo, signatureUrl, com
     const node = holder.querySelector("#robur-ticket");
     await new Promise((r) => setTimeout(r, 350)); // let images load
     const canvas = await html2canvas(node, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-    const imgData = canvas.toDataURL("image/jpeg", 0.92);
-    const pdf = new jsPDF({ unit: "mm", format: "a4" });
-    const pw = pdf.internal.pageSize.getWidth();
-    const imgH = (canvas.height * pw) / canvas.width;
-    pdf.addImage(imgData, "JPEG", 0, 0, pw, imgH, undefined, "FAST");
-    const blob = pdf.output("blob");
-    const file = new File([blob], `ticket-${dmtNo || Date.now()}.pdf`, { type: "application/pdf" });
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+    const file = new File([blob], `ticket-${dmtNo || Date.now()}.png`, { type: "image/png" });
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
     return file_url;
   } finally {
