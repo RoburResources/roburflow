@@ -69,12 +69,8 @@ const adminNav = adminNavGroups.flatMap((g) => g.items);
 const mobileNav = [
   { to: "/", label: "Home", icon: LayoutDashboard },
   { to: "/jobs", label: "Jobs", icon: ListChecks },
-  { to: "/dispatch-calendar", label: "Calendar", icon: CalendarDays },
   { to: "/review", label: "Review", icon: FileText },
-  { to: "/document-archive", label: "Docs", icon: Archive },
-  { to: "/performance-analytics", label: "Stats", icon: BarChart3 },
-  { to: "/clients", label: "Clients", icon: Users },
-  { to: "/drivers", label: "Drivers", icon: Truck },
+  { to: "/safety-briefings", label: "Safety", icon: ShieldCheck },
   { to: "/system-settings", label: "Settings", icon: Settings2 },
 ];
 
@@ -165,7 +161,7 @@ export default function Layout() {
           </AnimatePresence>
         </main>
         {/* Mobile bottom nav */}
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-background border-t border-border flex px-1 py-2 no-scrollbar overflow-x-auto select-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-background border-t border-border flex justify-around px-1 py-2 select-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
           {mobileNav.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             return (

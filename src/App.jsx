@@ -114,6 +114,7 @@ function App() {
                       <Route path="/resource-library" element={<KnowledgeLibrary title="Resource Library" subtitle="Company policies, manuals and standard operating procedures." />} />
                       <Route path="/fleet-overview" element={<AssetInventory />} />
                       <Route path="/document-verification" element={<DocumentVerification />} />
+                      <Route path="/document-verification/:jobId" element={<DocumentVerification />} />
                       <Route path="/client-portal" element={<ClientPortal />} />
                       <Route path="/compliance-dashboard" element={<ComplianceDashboard />} />
                     </Route>

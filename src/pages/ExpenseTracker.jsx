@@ -45,16 +45,20 @@ export default function ExpenseTracker() {
   const save = async () => {
     if (!form.amount) return;
     const job = jobs.find((j) => j.job_no === form.job_no);
-    await base44.entities.Expense.create({
+    const payload = {
       ...form,
       amount: Number(form.amount),
       job_id: job?.id,
       driver_name: user?.full_name || user?.email,
       driver_email: user?.email,
       status: "pending",
-    });
+    };
+    // Optimistically show the new expense immediately.
+    const optimistic = { ...payload, id: `temp-${Date.now()}` };
+    setExpenses((prev) => [optimistic, ...prev]);
     setForm(EMPTY);
     setOpen(false);
+    await base44.entities.Expense.create(payload);
     load();
   };
 

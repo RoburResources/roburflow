@@ -6,6 +6,7 @@ import { FileCheck, ChevronRight, Inbox } from "lucide-react";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, Pressable } from "@/components/motion/Motion";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 
 export default function Review() {
   const [jobs, setJobs] = useState([]);
@@ -19,12 +20,14 @@ export default function Review() {
   }, []);
 
   useEffect(() => { load(); }, [load]);
-  usePullToRefresh(load);
+  const { isRefreshing } = usePullToRefresh(load);
 
   return (
     <PageTransition className="p-4 md:p-8 max-w-3xl mx-auto">
       <h1 className="text-2xl font-extrabold text-robur-black mb-1">Review Queue</h1>
       <p className="text-sm text-slate-500 mb-6">Submitted jobs awaiting your review and sending.</p>
+
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       {loading ? (
         <div className="text-slate-400 text-sm py-8 text-center">Loading…</div>

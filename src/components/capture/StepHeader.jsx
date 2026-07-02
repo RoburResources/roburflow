@@ -6,7 +6,7 @@ export default function StepHeader({ title, subtitle, stepIndex, totalSteps, onB
     <div className="mb-5 select-none">
       <div className="flex items-center gap-3 mb-3">
         {onBack && (
-          <button onClick={onBack} className="p-2 -ml-2 text-slate-500">
+          <button onClick={onBack} aria-label="Go back" className="p-2 -ml-2 text-slate-500">
             <ArrowLeft className="w-5 h-5" />
           </button>
         )}

@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { format } from "date-fns";
 import { ScrollText, LogIn, FileCheck, Send, Settings2 } from "lucide-react";
 import { PageTransition, Stagger, StaggerItem } from "@/components/motion/Motion";
 import PageHeader from "@/components/shared/PageHeader";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 import EmptyState from "@/components/shared/EmptyState";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 
 const CATS = ["all", "auth", "job", "document", "system"];
 const ICONS = { auth: LogIn, job: FileCheck, document: Send, system: Settings2 };
@@ -20,18 +22,22 @@ export default function ActivityLogs() {
   const [loading, setLoading] = useState(true);
   const [cat, setCat] = useState("all");
 
-  useEffect(() => {
-    base44.entities.ActivityLog.list("-created_date", 300).then((l) => {
+  const load = useCallback(() => {
+    return base44.entities.ActivityLog.list("-created_date", 300).then((l) => {
       setLogs(l);
       setLoading(false);
     });
   }, []);
+  useEffect(() => { load(); }, [load]);
+  const { isRefreshing } = usePullToRefresh(load);
 
   const filtered = useMemo(() => (cat === "all" ? logs : logs.filter((l) => l.category === cat)), [logs, cat]);
 
   return (
     <PageTransition className="p-4 md:p-8 max-w-3xl mx-auto">
       <PageHeader title="Team Activity Logs" subtitle="Driver submissions, logins and system actions." icon={ScrollText} />
+
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       <div className="flex gap-2 overflow-x-auto no-scrollbar mb-5">
         {CATS.map((c) => (

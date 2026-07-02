@@ -7,10 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { PageTransition, Stagger, StaggerItem, Pressable, motion } from "@/components/motion/Motion";
 import PageHeader from "@/components/shared/PageHeader";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 import EmptyState from "@/components/shared/EmptyState";
 
 const CATEGORIES = ["safety", "operational", "policy", "urgent"];
@@ -38,6 +41,7 @@ export default function SafetyBriefings() {
     setAcks(a);
   };
   useEffect(() => { load(); }, []);
+  const { isRefreshing } = usePullToRefresh(load);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -59,6 +63,14 @@ export default function SafetyBriefings() {
   const ackCount = (bid) => acks.filter((a) => a.briefing_id === bid).length;
 
   const acknowledge = async (b) => {
+    const optimistic = {
+      id: `temp-${b.id}`,
+      briefing_id: b.id,
+      briefing_title: b.title,
+      driver_name: user?.full_name || user?.email,
+      driver_email: user?.email,
+    };
+    setAcks((prev) => [optimistic, ...prev]);
     await base44.entities.BriefingAck.create({
       briefing_id: b.id,
       briefing_title: b.title,
@@ -85,6 +97,8 @@ export default function SafetyBriefings() {
         )}
       />
 
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
+
       {visible.length === 0 ? (
         <EmptyState icon={ShieldCheck} text="No briefings posted." />
       ) : (
@@ -104,7 +118,7 @@ export default function SafetyBriefings() {
                       <div className="text-xs text-slate-400 mt-0.5">{format(new Date(b.created_date), "d MMM yyyy")}</div>
                     </div>
                     {isAdmin && (
-                      <button onClick={() => remove(b.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                      <button onClick={() => remove(b.id)} aria-label={`Delete briefing ${b.title}`} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
                     )}
                   </div>
                   {b.body && <p className="mt-2 text-sm text-slate-500 whitespace-pre-wrap">{b.body}</p>}
@@ -142,7 +156,7 @@ export default function SafetyBriefings() {
             </div>
             <div><Label>Content</Label><Textarea value={form.body} onChange={(e) => set("body", e.target.value)} rows={5} className="mt-1" /></div>
             <label className="flex items-center gap-2 text-sm text-slate-600">
-              <input type="checkbox" checked={form.mandatory} onChange={(e) => set("mandatory", e.target.checked)} className="w-4 h-4 accent-robur-gold" />
+              <Checkbox checked={form.mandatory} onCheckedChange={(v) => set("mandatory", v)} />
               Mandatory acknowledgement before shift
             </label>
             <Button onClick={save} disabled={!form.title} className="w-full h-11 bg-robur-black hover:bg-black text-white font-bold">Post Briefing</Button>

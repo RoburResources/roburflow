@@ -8,6 +8,7 @@ import StatusBadge from "@/components/jobs/StatusBadge";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, Pressable, motion } from "@/components/motion/Motion";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 
 const FILTERS = ["all", "assigned", "in_progress", "submitted", "sent"];
 const FILTER_LABELS = { all: "All", assigned: "Assigned", in_progress: "In Progress", submitted: "Submitted", sent: "Sent" };
@@ -23,7 +24,7 @@ export default function Jobs() {
   }, []);
 
   useEffect(() => { load(); }, [load]);
-  usePullToRefresh(load);
+  const { isRefreshing } = usePullToRefresh(load);
 
   const filtered = jobs.filter((j) => {
     if (filter !== "all" && j.status !== filter) return false;
@@ -46,6 +47,8 @@ export default function Jobs() {
           </Link>
         </motion.div>
       </div>
+
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       <div className="relative mb-4">
         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />

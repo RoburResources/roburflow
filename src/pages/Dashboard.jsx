@@ -7,6 +7,8 @@ import StatusBadge from "@/components/jobs/StatusBadge";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, Pressable, Pop, motion } from "@/components/motion/Motion";
 import DispatchBoard from "@/components/dispatch/DispatchBoard";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 
 function Stat({ icon: Icon, label, value, accent }) {
   return (
@@ -32,6 +34,7 @@ export default function Dashboard() {
     setLoading(false);
   };
   useEffect(() => { load(); }, []);
+  const { isRefreshing } = usePullToRefresh(load);
 
   const todaysJobs = jobs.filter((j) => j.job_date === today);
   const counts = {
@@ -54,6 +57,8 @@ export default function Dashboard() {
           </Link>
         </motion.div>
       </div>
+
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
         <StaggerItem><Stat icon={ListChecks} label="Assigned" value={counts.assigned} accent="bg-slate-100 text-slate-600" /></StaggerItem>

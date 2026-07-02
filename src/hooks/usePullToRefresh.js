@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function usePullToRefresh(onRefresh, containerRef) {
   const startY = useRef(0);
   const pulling = useRef(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     const el = containerRef?.current || document.body;
@@ -12,11 +13,18 @@ export function usePullToRefresh(onRefresh, containerRef) {
         pulling.current = true;
       }
     };
-    const handleTouchEnd = (e) => {
+    const handleTouchEnd = async (e) => {
       if (pulling.current) {
         const dy = e.changedTouches[0].clientY - startY.current;
-        if (dy > 80) onRefresh();
         pulling.current = false;
+        if (dy > 80) {
+          setIsRefreshing(true);
+          try {
+            await onRefresh();
+          } finally {
+            setIsRefreshing(false);
+          }
+        }
       }
     };
     el.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -26,4 +34,6 @@ export function usePullToRefresh(onRefresh, containerRef) {
       el.removeEventListener('touchend', handleTouchEnd);
     };
   }, [onRefresh, containerRef]);
+
+  return { isRefreshing };
 }

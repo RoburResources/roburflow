@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import { ShieldCheck, FileText, CheckCircle2, ChevronRight, Image as ImageIcon } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ShieldCheck, FileText, CheckCircle2, ChevronRight, Image as ImageIcon, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageTransition, Stagger, StaggerItem, Pressable } from "@/components/motion/Motion";
 import PageHeader from "@/components/shared/PageHeader";
@@ -11,6 +11,8 @@ import { DOC_TYPE_LABELS, getDocFields } from "@/lib/documentSchemas";
 
 // Admin side-by-side verification: extracted ticket data vs the source docket image.
 export default function DocumentVerification() {
+  const navigate = useNavigate();
+  const { jobId } = useParams();
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [docs, setDocs] = useState([]);
@@ -20,22 +22,30 @@ export default function DocumentVerification() {
     base44.entities.Job.filter({ status: "submitted" }, "-submitted_at").then(setJobs);
   }, []);
 
-  const openJob = async (job) => {
-    setSelectedJob(job);
-    const d = await base44.entities.JobDocument.filter({ job_id: job.id });
-    setDocs(d);
-    setActiveDoc(d[0] || null);
-  };
+  // Load the selected job's documents whenever the URL param changes.
+  useEffect(() => {
+    if (!jobId) {
+      setSelectedJob(null);
+      setDocs([]);
+      setActiveDoc(null);
+      return;
+    }
+    (async () => {
+      const job = await base44.entities.Job.get(jobId);
+      setSelectedJob(job);
+      const d = await base44.entities.JobDocument.filter({ job_id: jobId });
+      setDocs(d);
+      setActiveDoc(d[0] || null);
+    })();
+  }, [jobId]);
 
   const approve = async () => {
     await base44.entities.Job.update(selectedJob.id, { status: "sent" });
     setJobs((list) => list.filter((j) => j.id !== selectedJob.id));
-    setSelectedJob(null);
-    setDocs([]);
-    setActiveDoc(null);
+    navigate("/document-verification");
   };
 
-  if (!selectedJob) {
+  if (!jobId || !selectedJob) {
     return (
       <PageTransition className="p-4 md:p-8 max-w-3xl mx-auto">
         <PageHeader title="Document Verification" subtitle="Check extracted data against source images before approval." icon={ShieldCheck} />
@@ -45,7 +55,7 @@ export default function DocumentVerification() {
           <Stagger className="space-y-2">
             {jobs.map((j) => (
               <StaggerItem key={j.id}>
-                <Pressable onClick={() => openJob(j)} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex items-center justify-between gap-3 cursor-pointer">
+                <Pressable onClick={() => navigate(`/document-verification/${j.id}`)} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex items-center justify-between gap-3 cursor-pointer">
                   <div className="min-w-0">
                     <h3 className="font-bold text-robur-black">{j.client_name}</h3>
                     <div className="text-xs text-slate-400">{j.job_no} · {j.submitted_at ? format(new Date(j.submitted_at), "d MMM yyyy, HH:mm") : ""}</div>
@@ -65,7 +75,9 @@ export default function DocumentVerification() {
 
   return (
     <PageTransition className="p-4 md:p-8 max-w-5xl mx-auto">
-      <button onClick={() => setSelectedJob(null)} className="text-sm text-slate-500 mb-4">← Back to queue</button>
+      <button onClick={() => navigate(-1)} aria-label="Go back" className="inline-flex items-center gap-1 text-sm text-slate-500 mb-4">
+        <ArrowLeft className="w-4 h-4" /> Back to queue
+      </button>
       <PageHeader
         title={selectedJob.client_name}
         subtitle={`${selectedJob.job_no} · verify then approve`}

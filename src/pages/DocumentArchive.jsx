@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { format } from "date-fns";
 import { Archive, Search, FileText, FileDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { PageTransition, Stagger, StaggerItem, Pressable } from "@/components/motion/Motion";
 import PageHeader from "@/components/shared/PageHeader";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 import EmptyState from "@/components/shared/EmptyState";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 
 const DOC_LABELS = { service_docket: "Service Docket", dmt: "DMT", mgt: "MGT", settlement_summary: "Settlement" };
 const TYPES = ["all", "service_docket", "dmt", "mgt", "settlement_summary"];
@@ -17,8 +19,8 @@ export default function DocumentArchive() {
   const [q, setQ] = useState("");
   const [type, setType] = useState("all");
 
-  useEffect(() => {
-    Promise.all([
+  const load = useCallback(() => {
+    return Promise.all([
       base44.entities.JobDocument.filter({ completed: true }, "-created_date", 500),
       base44.entities.Job.list("-created_date", 500),
     ]).then(([d, j]) => {
@@ -27,6 +29,8 @@ export default function DocumentArchive() {
       setLoading(false);
     });
   }, []);
+  useEffect(() => { load(); }, [load]);
+  const { isRefreshing } = usePullToRefresh(load);
 
   const filtered = useMemo(() => {
     return docs.filter((d) => {
@@ -41,6 +45,8 @@ export default function DocumentArchive() {
   return (
     <PageTransition className="p-4 md:p-8 max-w-4xl mx-auto">
       <PageHeader title="Document Archive" subtitle="Every finalized document and report, searchable." icon={Archive} />
+
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       <div className="relative mb-3">
         <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />

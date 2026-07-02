@@ -7,6 +7,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, motion } from "@/components/motion/Motion";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 
 export default function DriverJobs() {
   const { user } = useCurrentUser();
@@ -29,7 +30,7 @@ export default function DriverJobs() {
   }, [user]);
 
   useEffect(() => { load(); }, [load]);
-  usePullToRefresh(load);
+  const { isRefreshing } = usePullToRefresh(load);
 
   const todays = jobs.filter((j) => j.job_date === today && j.status !== "sent");
   const done = jobs.filter((j) => j.status === "submitted" || j.status === "sent");
@@ -40,6 +41,8 @@ export default function DriverJobs() {
         <h1 className="text-2xl font-extrabold text-robur-black">Today's Jobs</h1>
         <p className="text-sm text-slate-500">{format(new Date(), "EEEE, d MMMM")}</p>
       </div>
+
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       <div className="grid grid-cols-4 gap-2 mb-6">
         {[

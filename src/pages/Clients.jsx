@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Plus, Mail, Phone, MapPin, Pencil, Trash2, Users } from "lucide-react";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
+import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,7 +21,7 @@ export default function Clients() {
 
   const load = () => base44.entities.Client.list("-created_date").then(setClients);
   useEffect(() => { load(); }, []);
-  usePullToRefresh(load);
+  const { isRefreshing } = usePullToRefresh(load);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -51,6 +52,8 @@ export default function Clients() {
           </Button>
         </motion.div>
       </div>
+
+      <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       {clients.length === 0 ? (
         <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 text-center">

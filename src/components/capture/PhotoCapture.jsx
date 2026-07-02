@@ -31,7 +31,7 @@ export default function PhotoCapture({ photos = [], onChange, label = "Add Photo
           {photos.map((p) => (
             <div key={p} className="relative aspect-square rounded-xl overflow-hidden border border-slate-200">
               <img src={p} alt="capture" className="w-full h-full object-cover" />
-              <button onClick={() => remove(p)} className="absolute top-1 right-1 bg-black/60 rounded-full p-1">
+              <button onClick={() => remove(p)} aria-label="Remove photo" className="absolute top-1 right-1 bg-black/60 rounded-full p-1">
                 <X className="w-3 h-3 text-white" />
               </button>
             </div>
