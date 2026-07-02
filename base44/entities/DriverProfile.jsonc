@@ -1,0 +1,51 @@
+{
+  "name": "DriverProfile",
+  "type": "object",
+  "properties": {
+    "driver_id": {
+      "type": "string",
+      "description": "Reference to Driver entity"
+    },
+    "driver_name": {
+      "type": "string"
+    },
+    "license_number": {
+      "type": "string"
+    },
+    "license_class": {
+      "type": "string"
+    },
+    "license_expiry": {
+      "type": "string",
+      "format": "date"
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "expiry": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "emergency_contact_name": {
+      "type": "string"
+    },
+    "emergency_contact_phone": {
+      "type": "string"
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "driver_name"
+  ]
+}

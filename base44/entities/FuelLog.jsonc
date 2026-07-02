@@ -1,0 +1,35 @@
+{
+  "name": "FuelLog",
+  "type": "object",
+  "properties": {
+    "vehicle_rego": {
+      "type": "string"
+    },
+    "driver_name": {
+      "type": "string"
+    },
+    "fuel_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "litres": {
+      "type": "number"
+    },
+    "cost": {
+      "type": "number",
+      "description": "Total cost in AUD"
+    },
+    "odometer": {
+      "type": "number"
+    },
+    "station": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "vehicle_rego"
+  ]
+}

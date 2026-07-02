@@ -1,0 +1,42 @@
+{
+  "name": "AppSettings",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "default": "Robur Resources"
+    },
+    "company_abn": {
+      "type": "string"
+    },
+    "company_address": {
+      "type": "string"
+    },
+    "company_phone": {
+      "type": "string"
+    },
+    "company_email": {
+      "type": "string"
+    },
+    "pdf_footer_note": {
+      "type": "string"
+    },
+    "ai_model": {
+      "type": "string",
+      "default": "Qwen/Qwen3-VL-8B-Instruct"
+    },
+    "notify_on_submission": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_on_incident": {
+      "type": "boolean",
+      "default": true
+    },
+    "cc_email": {
+      "type": "string",
+      "description": "Optional email to CC on client sends"
+    }
+  },
+  "required": []
+}

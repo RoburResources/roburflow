@@ -1,0 +1,39 @@
+{
+  "name": "ActivityLog",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "description": "Action key e.g. job_submitted, login, document_sent"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "auth",
+        "job",
+        "document",
+        "system"
+      ],
+      "default": "system"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human readable description"
+    },
+    "actor_name": {
+      "type": "string"
+    },
+    "actor_email": {
+      "type": "string"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "job_no": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "action"
+  ]
+}

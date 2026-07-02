@@ -4,15 +4,64 @@ import { AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import RoburLogo from "@/components/brand/RoburLogo";
-import { LayoutDashboard, ListChecks, Users, Truck, FileText, LogOut, Receipt } from "lucide-react";
+import {
+  LayoutDashboard, ListChecks, Users, Truck, FileText, LogOut, Receipt,
+  Archive, ScrollText, LayoutTemplate, Settings2, BarChart3, Boxes,
+  ShieldAlert, KeyRound, Wrench, Fuel, UserCheck, CalendarDays,
+} from "lucide-react";
 
-const adminNav = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard },
+const adminNavGroups = [
+  {
+    label: "Operations",
+    items: [
+      { to: "/", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/jobs", label: "Jobs", icon: ListChecks },
+      { to: "/dispatch-calendar", label: "Dispatch Calendar", icon: CalendarDays },
+      { to: "/review", label: "Review", icon: FileText },
+      { to: "/settlements", label: "Settlements", icon: Receipt },
+      { to: "/quick-templates", label: "Quick Templates", icon: LayoutTemplate },
+    ],
+  },
+  {
+    label: "Records",
+    items: [
+      { to: "/document-archive", label: "Document Archive", icon: Archive },
+      { to: "/performance-analytics", label: "Analytics", icon: BarChart3 },
+      { to: "/activity-logs", label: "Activity Logs", icon: ScrollText },
+      { to: "/incident-reports", label: "Incident Reports", icon: ShieldAlert },
+    ],
+  },
+  {
+    label: "Fleet & People",
+    items: [
+      { to: "/clients", label: "Clients", icon: Users },
+      { to: "/drivers", label: "Drivers", icon: Truck },
+      { to: "/driver-onboarding", label: "Onboarding", icon: UserCheck },
+      { to: "/inventory-assets", label: "Inventory", icon: Boxes },
+      { to: "/maintenance-schedule", label: "Maintenance", icon: Wrench },
+      { to: "/fuel-logs", label: "Fuel Logs", icon: Fuel },
+    ],
+  },
+  {
+    label: "Admin",
+    items: [
+      { to: "/client-access", label: "Client Access", icon: KeyRound },
+      { to: "/system-settings", label: "System Settings", icon: Settings2 },
+    ],
+  },
+];
+
+const adminNav = adminNavGroups.flatMap((g) => g.items);
+const mobileNav = [
+  { to: "/", label: "Home", icon: LayoutDashboard },
   { to: "/jobs", label: "Jobs", icon: ListChecks },
+  { to: "/dispatch-calendar", label: "Calendar", icon: CalendarDays },
   { to: "/review", label: "Review", icon: FileText },
-  { to: "/settlements", label: "Settlements", icon: Receipt },
+  { to: "/document-archive", label: "Docs", icon: Archive },
+  { to: "/performance-analytics", label: "Stats", icon: BarChart3 },
   { to: "/clients", label: "Clients", icon: Users },
   { to: "/drivers", label: "Drivers", icon: Truck },
+  { to: "/system-settings", label: "Settings", icon: Settings2 },
 ];
 
 export default function Layout() {
@@ -55,22 +104,29 @@ export default function Layout() {
         <div className="px-5 py-5 border-b border-white/10">
           <RoburLogo dark />
         </div>
-        <nav className="flex-1 p-3 space-y-1">
-          {adminNav.map((item) => {
-            const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                  active ? "bg-robur-gold text-robur-black" : "text-white/70 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <item.icon className="w-5 h-5" />
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 p-3 space-y-4 overflow-y-auto no-scrollbar">
+          {adminNavGroups.map((group) => (
+            <div key={group.label}>
+              <div className="px-4 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/30">{group.label}</div>
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                        active ? "bg-robur-gold text-robur-black" : "text-white/70 hover:bg-white/10 hover:text-white"
+                      }`}
+                    >
+                      <item.icon className="w-5 h-5 shrink-0" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
         <div className="p-3 border-t border-white/10">
           <div className="px-4 py-2 text-xs text-white/50 truncate">{user?.email}</div>
@@ -95,8 +151,8 @@ export default function Layout() {
           </AnimatePresence>
         </main>
         {/* Mobile bottom nav */}
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-slate-200 flex justify-around px-1 py-2 no-scrollbar overflow-x-auto">
-          {adminNav.map((item) => {
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-slate-200 flex px-1 py-2 no-scrollbar overflow-x-auto">
+          {mobileNav.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             return (
               <Link key={item.to} to={item.to} className="flex flex-col items-center gap-0.5 px-3 py-1 min-w-[56px]">

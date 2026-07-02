@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { FileCheck, ChevronRight, Inbox } from "lucide-react";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
+import { PageTransition, Stagger, StaggerItem, Pressable } from "@/components/motion/Motion";
 
 export default function Review() {
   const [jobs, setJobs] = useState([]);
@@ -17,7 +18,7 @@ export default function Review() {
   }, []);
 
   return (
-    <div className="p-4 md:p-8 max-w-3xl mx-auto">
+    <PageTransition className="p-4 md:p-8 max-w-3xl mx-auto">
       <h1 className="text-2xl font-extrabold text-robur-black mb-1">Review Queue</h1>
       <p className="text-sm text-slate-500 mb-6">Submitted jobs awaiting your review and sending.</p>
 
@@ -29,9 +30,11 @@ export default function Review() {
           <p className="text-slate-500">Nothing to review right now.</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <Stagger className="space-y-3">
           {jobs.map((job) => (
-            <Link key={job.id} to={`/review/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <StaggerItem key={job.id}>
+            <Pressable>
+            <Link to={`/review/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-10 h-10 rounded-xl bg-robur-goldLight flex items-center justify-center shrink-0">
@@ -48,9 +51,11 @@ export default function Review() {
                 <ChevronRight className="w-5 h-5 text-slate-300 shrink-0" />
               </div>
             </Link>
+            </Pressable>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
-    </div>
+    </PageTransition>
   );
 }

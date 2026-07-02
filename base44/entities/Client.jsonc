@@ -19,6 +19,11 @@
     },
     "notes": {
       "type": "string"
+    },
+    "portal_access": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this client can log in to view their own job history"
     }
   },
   "required": [

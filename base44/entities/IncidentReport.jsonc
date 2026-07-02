@@ -1,0 +1,64 @@
+{
+  "name": "IncidentReport",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short summary of the incident"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "safety",
+        "site_issue",
+        "equipment_damage",
+        "environmental",
+        "other"
+      ],
+      "default": "safety"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium"
+    },
+    "description": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "job_no": {
+      "type": "string"
+    },
+    "reported_by_name": {
+      "type": "string"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "under_review",
+        "resolved"
+      ],
+      "default": "open"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

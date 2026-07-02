@@ -25,6 +25,18 @@ import Review from '@/pages/Review';
 import ReviewDetail from '@/pages/ReviewDetail';
 import Settlements from '@/pages/Settlements';
 import DriverCapture from '@/pages/DriverCapture';
+import DocumentArchive from '@/pages/DocumentArchive';
+import ActivityLogs from '@/pages/ActivityLogs';
+import QuickTemplates from '@/pages/QuickTemplates';
+import SystemSettings from '@/pages/SystemSettings';
+import PerformanceAnalytics from '@/pages/PerformanceAnalytics';
+import InventoryAssets from '@/pages/InventoryAssets';
+import IncidentReports from '@/pages/IncidentReports';
+import ClientAccess from '@/pages/ClientAccess';
+import MaintenanceSchedule from '@/pages/MaintenanceSchedule';
+import FuelLogs from '@/pages/FuelLogs';
+import DriverOnboarding from '@/pages/DriverOnboarding';
+import DispatchCalendar from '@/pages/DispatchCalendar';
 
 function App() {
   return (
@@ -50,6 +62,18 @@ function App() {
                 <Route path="/review" element={<Review />} />
                 <Route path="/review/:id" element={<ReviewDetail />} />
                 <Route path="/settlements" element={<Settlements />} />
+                <Route path="/document-archive" element={<DocumentArchive />} />
+                <Route path="/activity-logs" element={<ActivityLogs />} />
+                <Route path="/quick-templates" element={<QuickTemplates />} />
+                <Route path="/system-settings" element={<SystemSettings />} />
+                <Route path="/performance-analytics" element={<PerformanceAnalytics />} />
+                <Route path="/inventory-assets" element={<InventoryAssets />} />
+                <Route path="/incident-reports" element={<IncidentReports />} />
+                <Route path="/client-access" element={<ClientAccess />} />
+                <Route path="/maintenance-schedule" element={<MaintenanceSchedule />} />
+                <Route path="/fuel-logs" element={<FuelLogs />} />
+                <Route path="/driver-onboarding" element={<DriverOnboarding />} />
+                <Route path="/dispatch-calendar" element={<DispatchCalendar />} />
                 {/* Driver capture flow */}
                 <Route path="/job/:id" element={<DriverCapture />} />
               </Route>

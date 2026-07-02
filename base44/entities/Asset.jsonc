@@ -1,0 +1,53 @@
+{
+  "name": "Asset",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Asset name e.g. Excavator, Angle Grinder"
+    },
+    "asset_tag": {
+      "type": "string",
+      "description": "Internal asset ID / tag"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "machinery",
+        "vehicle",
+        "tool",
+        "equipment",
+        "other"
+      ],
+      "default": "tool"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "assigned",
+        "maintenance",
+        "retired"
+      ],
+      "default": "available"
+    },
+    "assigned_driver_id": {
+      "type": "string"
+    },
+    "assigned_driver_name": {
+      "type": "string"
+    },
+    "assigned_job_id": {
+      "type": "string"
+    },
+    "assigned_job_no": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

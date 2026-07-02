@@ -1,0 +1,35 @@
+{
+  "name": "JobTemplate",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Template name"
+    },
+    "service_type": {
+      "type": "string",
+      "description": "e.g. Pickup, Swap, Deliver"
+    },
+    "body": {
+      "type": "string",
+      "description": "Reusable job description / instructions text"
+    },
+    "required_documents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "service_docket",
+          "dmt",
+          "mgt"
+        ]
+      },
+      "default": [
+        "service_docket"
+      ]
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

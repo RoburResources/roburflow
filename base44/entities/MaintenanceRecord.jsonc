@@ -1,0 +1,47 @@
+{
+  "name": "MaintenanceRecord",
+  "type": "object",
+  "properties": {
+    "vehicle_rego": {
+      "type": "string",
+      "description": "Vehicle registration"
+    },
+    "service_type": {
+      "type": "string",
+      "description": "e.g. Oil change, Tyre rotation, Inspection"
+    },
+    "service_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "next_service_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "odometer": {
+      "type": "number"
+    },
+    "cost": {
+      "type": "number"
+    },
+    "provider": {
+      "type": "string",
+      "description": "Service provider / workshop"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "completed",
+        "overdue"
+      ],
+      "default": "scheduled"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "vehicle_rego"
+  ]
+}
