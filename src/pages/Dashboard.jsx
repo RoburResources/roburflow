@@ -6,6 +6,7 @@ import { Plus, ListChecks, Clock, FileCheck, Send } from "lucide-react";
 import StatusBadge from "@/components/jobs/StatusBadge";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, Pressable, Pop, motion } from "@/components/motion/Motion";
+import DispatchBoard from "@/components/dispatch/DispatchBoard";
 
 function Stat({ icon: Icon, label, value, accent }) {
   return (
@@ -60,6 +61,8 @@ export default function Dashboard() {
         <StaggerItem><Stat icon={FileCheck} label="Awaiting Review" value={counts.submitted} accent="bg-robur-goldLight text-robur-goldDark" /></StaggerItem>
         <StaggerItem><Stat icon={Send} label="Sent to Client" value={counts.sent} accent="bg-green-100 text-green-600" /></StaggerItem>
       </Stagger>
+
+      <DispatchBoard />
 
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-lg font-bold text-robur-black">Today's Jobs</h2>
