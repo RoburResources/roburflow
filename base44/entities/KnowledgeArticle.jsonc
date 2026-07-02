@@ -1,0 +1,36 @@
+{
+  "name": "KnowledgeArticle",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "safety_procedure",
+        "company_policy",
+        "sop",
+        "manual",
+        "guide",
+        "other"
+      ],
+      "default": "guide"
+    },
+    "body": {
+      "type": "string",
+      "description": "Article content (markdown supported)"
+    },
+    "attachment_url": {
+      "type": "string",
+      "description": "Optional downloadable file (PDF, manual)"
+    },
+    "published": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

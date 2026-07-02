@@ -1,0 +1,60 @@
+{
+  "name": "Expense",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "fuel",
+        "tolls",
+        "parking",
+        "maintenance",
+        "supplies",
+        "other"
+      ],
+      "default": "fuel"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Amount in AUD"
+    },
+    "expense_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "job_id": {
+      "type": "string",
+      "description": "Reference to Job entity"
+    },
+    "job_no": {
+      "type": "string"
+    },
+    "driver_name": {
+      "type": "string"
+    },
+    "driver_email": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "receipt_url": {
+      "type": "string",
+      "description": "Uploaded receipt image"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "reimbursed",
+        "rejected"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "category",
+    "amount"
+  ]
+}

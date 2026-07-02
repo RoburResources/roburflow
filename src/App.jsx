@@ -38,6 +38,15 @@ import FuelLogs from '@/pages/FuelLogs';
 import DriverOnboarding from '@/pages/DriverOnboarding';
 import DispatchCalendar from '@/pages/DispatchCalendar';
 import AssetInventory from '@/pages/AssetInventory';
+import SafetyBriefings from '@/pages/SafetyBriefings';
+import ExpenseTracker from '@/pages/ExpenseTracker';
+import DriverCertifications from '@/pages/DriverCertifications';
+import MaintenanceAlerts from '@/pages/MaintenanceAlerts';
+import ClientFeedback from '@/pages/ClientFeedback';
+import KnowledgeLibrary from '@/pages/KnowledgeLibrary';
+import ComplianceDashboard from '@/pages/ComplianceDashboard';
+import DocumentVerification from '@/pages/DocumentVerification';
+import ClientPortal from '@/pages/ClientPortal';
 
 function App() {
   return (
@@ -77,6 +86,19 @@ function App() {
                 <Route path="/dispatch-calendar" element={<DispatchCalendar />} />
                 <Route path="/asset-inventory" element={<AssetInventory />} />
                 <Route path="/service-templates" element={<QuickTemplates />} />
+                {/* New feature pages */}
+                <Route path="/safety-briefings" element={<SafetyBriefings />} />
+                <Route path="/expense-tracker" element={<ExpenseTracker />} />
+                <Route path="/driver-certifications" element={<DriverCertifications />} />
+                <Route path="/maintenance-alerts" element={<MaintenanceAlerts />} />
+                <Route path="/client-feedback" element={<ClientFeedback />} />
+                <Route path="/incident-reporting" element={<IncidentReports />} />
+                <Route path="/quick-references" element={<KnowledgeLibrary title="Quick References" subtitle="Safety procedures, company policies and instructional guides." />} />
+                <Route path="/resource-library" element={<KnowledgeLibrary title="Resource Library" subtitle="Company policies, manuals and standard operating procedures." />} />
+                <Route path="/fleet-overview" element={<AssetInventory />} />
+                <Route path="/document-verification" element={<DocumentVerification />} />
+                <Route path="/client-portal" element={<ClientPortal />} />
+                <Route path="/compliance-dashboard" element={<ComplianceDashboard />} />
                 {/* Driver capture flow */}
                 <Route path="/job/:id" element={<DriverCapture />} />
               </Route>

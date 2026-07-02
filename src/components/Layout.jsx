@@ -8,6 +8,7 @@ import {
   LayoutDashboard, ListChecks, Users, Truck, FileText, LogOut, Receipt,
   Archive, ScrollText, LayoutTemplate, Settings2, BarChart3, Boxes,
   ShieldAlert, KeyRound, Wrench, Fuel, UserCheck, CalendarDays,
+  ShieldCheck, Wallet, BadgeCheck, AlertTriangle, MessageSquare, BookOpen,
 } from "lucide-react";
 
 const adminNavGroups = [
@@ -18,6 +19,7 @@ const adminNavGroups = [
       { to: "/jobs", label: "Jobs", icon: ListChecks },
       { to: "/dispatch-calendar", label: "Dispatch Calendar", icon: CalendarDays },
       { to: "/review", label: "Review", icon: FileText },
+      { to: "/document-verification", label: "Verify Docs", icon: ShieldCheck },
       { to: "/settlements", label: "Settlements", icon: Receipt },
       { to: "/quick-templates", label: "Quick Templates", icon: LayoutTemplate },
     ],
@@ -29,6 +31,7 @@ const adminNavGroups = [
       { to: "/performance-analytics", label: "Analytics", icon: BarChart3 },
       { to: "/activity-logs", label: "Activity Logs", icon: ScrollText },
       { to: "/incident-reports", label: "Incident Reports", icon: ShieldAlert },
+      { to: "/client-feedback", label: "Client Feedback", icon: MessageSquare },
     ],
   },
   {
@@ -39,7 +42,18 @@ const adminNavGroups = [
       { to: "/driver-onboarding", label: "Onboarding", icon: UserCheck },
       { to: "/inventory-assets", label: "Inventory", icon: Boxes },
       { to: "/maintenance-schedule", label: "Maintenance", icon: Wrench },
+      { to: "/maintenance-alerts", label: "Maintenance Alerts", icon: AlertTriangle },
       { to: "/fuel-logs", label: "Fuel Logs", icon: Fuel },
+    ],
+  },
+  {
+    label: "Compliance & Docs",
+    items: [
+      { to: "/driver-certifications", label: "Certifications", icon: BadgeCheck },
+      { to: "/compliance-dashboard", label: "Compliance", icon: ShieldCheck },
+      { to: "/safety-briefings", label: "Safety Briefings", icon: ShieldCheck },
+      { to: "/expense-tracker", label: "Expenses", icon: Wallet },
+      { to: "/resource-library", label: "Resource Library", icon: BookOpen },
     ],
   },
   {

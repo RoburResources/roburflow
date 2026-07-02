@@ -1,0 +1,22 @@
+{
+  "name": "BriefingAck",
+  "type": "object",
+  "properties": {
+    "briefing_id": {
+      "type": "string",
+      "description": "Reference to SafetyBriefing"
+    },
+    "briefing_title": {
+      "type": "string"
+    },
+    "driver_name": {
+      "type": "string"
+    },
+    "driver_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "briefing_id"
+  ]
+}

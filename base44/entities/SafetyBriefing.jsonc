@@ -1,0 +1,40 @@
+{
+  "name": "SafetyBriefing",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Briefing / notice title"
+    },
+    "body": {
+      "type": "string",
+      "description": "Full briefing content"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "safety",
+        "operational",
+        "policy",
+        "urgent"
+      ],
+      "default": "safety"
+    },
+    "attachment_url": {
+      "type": "string",
+      "description": "Optional attached document"
+    },
+    "mandatory": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether drivers must acknowledge before shift"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

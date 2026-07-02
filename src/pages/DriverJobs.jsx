@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import { MapPin, ChevronRight, CheckCircle2, Clock, ClipboardList } from "lucide-react";
+import { MapPin, ChevronRight, CheckCircle2, Clock, ClipboardList, ShieldCheck, Wallet, BookOpen, ShieldAlert } from "lucide-react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, motion } from "@/components/motion/Motion";
@@ -37,6 +37,20 @@ export default function DriverJobs() {
       <div className="mb-5">
         <h1 className="text-2xl font-extrabold text-robur-black">Today's Jobs</h1>
         <p className="text-sm text-slate-500">{format(new Date(), "EEEE, d MMMM")}</p>
+      </div>
+
+      <div className="grid grid-cols-4 gap-2 mb-6">
+        {[
+          { to: "/safety-briefings", label: "Briefings", icon: ShieldCheck },
+          { to: "/expense-tracker", label: "Expenses", icon: Wallet },
+          { to: "/quick-references", label: "Guides", icon: BookOpen },
+          { to: "/incident-reporting", label: "Report", icon: ShieldAlert },
+        ].map((q) => (
+          <Link key={q.to} to={q.to} className="flex flex-col items-center gap-1.5 bg-white rounded-2xl border border-slate-100 shadow-sm py-3">
+            <q.icon className="w-5 h-5 text-robur-goldDark" />
+            <span className="text-[11px] font-semibold text-robur-black">{q.label}</span>
+          </Link>
+        ))}
       </div>
 
       {loading ? (
