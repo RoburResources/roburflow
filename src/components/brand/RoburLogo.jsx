@@ -1,24 +1,22 @@
 import React from "react";
 
-// Robur Resources logo mark — stylised "R" in gold/black with wordmark
+// Official Robur Resources brand assets.
+// `dark` = for use on dark backgrounds (renders the white/gold variant).
+const HORIZONTAL_LIGHT = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/5f620fa65_01_primary_horizontal_light_transparent.png";
+const HORIZONTAL_DARK = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/71b5125fc_03_primary_horizontal_dark_transparent.png";
+const ICON_LIGHT = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/34773dd1d_09_r_icon_light_transparent.png";
+const ICON_DARK = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/9d97711dd_11_r_icon_dark_transparent.png";
+
 export default function RoburLogo({ className = "", showText = true, dark = false }) {
-  const textColor = dark ? "#FFFFFF" : "#1A1A1A";
+  const src = showText
+    ? (dark ? HORIZONTAL_DARK : HORIZONTAL_LIGHT)
+    : (dark ? ICON_DARK : ICON_LIGHT);
+
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <svg viewBox="0 0 48 48" className="h-9 w-9 shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 4h20a12 12 0 0 1 4 23.3L44 44H30L18 30v14H6V4z" fill="#1A1A1A" />
-        <path d="M6 44V30l8 8-2 6H6zM6 4l14 14H6V4z" fill="#FFC400" />
-      </svg>
-      {showText && (
-        <div className="leading-none">
-          <div className="text-lg font-extrabold tracking-tight" style={{ color: textColor }}>
-            ROBUR
-          </div>
-          <div className="text-[9px] font-semibold tracking-[0.35em]" style={{ color: "#FFC400" }}>
-            RESOURCES
-          </div>
-        </div>
-      )}
-    </div>
+    <img
+      src={src}
+      alt="Robur Resources"
+      className={`${showText ? "h-8" : "h-9"} w-auto object-contain ${className}`}
+    />
   );
 }
