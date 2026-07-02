@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
@@ -6,6 +6,7 @@ import { MapPin, ChevronRight, CheckCircle2, Clock, ClipboardList, ShieldCheck, 
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, motion } from "@/components/motion/Motion";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 
 export default function DriverJobs() {
   const { user } = useCurrentUser();
@@ -13,21 +14,22 @@ export default function DriverJobs() {
   const [loading, setLoading] = useState(true);
   const today = format(new Date(), "yyyy-MM-dd");
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     if (!user) return;
     // Match jobs assigned to this driver by their email (linked in Driver records)
-    (async () => {
-      const drivers = await base44.entities.Driver.filter({ email: user.email });
-      const driverIds = drivers.map((d) => d.id);
-      const all = await base44.entities.Job.list("-job_date", 200);
-      const mine = all.filter((j) =>
-        driverIds.includes(j.assigned_driver_id) ||
-        (j.assigned_driver_name && user.full_name && j.assigned_driver_name === user.full_name)
-      );
-      setJobs(mine);
-      setLoading(false);
-    })();
+    const drivers = await base44.entities.Driver.filter({ email: user.email });
+    const driverIds = drivers.map((d) => d.id);
+    const all = await base44.entities.Job.list("-job_date", 200);
+    const mine = all.filter((j) =>
+      driverIds.includes(j.assigned_driver_id) ||
+      (j.assigned_driver_name && user.full_name && j.assigned_driver_name === user.full_name)
+    );
+    setJobs(mine);
+    setLoading(false);
   }, [user]);
+
+  useEffect(() => { load(); }, [load]);
+  usePullToRefresh(load);
 
   const todays = jobs.filter((j) => j.job_date === today && j.status !== "sent");
   const done = jobs.filter((j) => j.status === "submitted" || j.status === "sent");

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import StatusBadge from "@/components/jobs/StatusBadge";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, Pressable, motion } from "@/components/motion/Motion";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 
 const FILTERS = ["all", "assigned", "in_progress", "submitted", "sent"];
 const FILTER_LABELS = { all: "All", assigned: "Assigned", in_progress: "In Progress", submitted: "Submitted", sent: "Sent" };
@@ -17,9 +18,12 @@ export default function Jobs() {
   const [filter, setFilter] = useState("all");
   const [q, setQ] = useState("");
 
-  useEffect(() => {
-    base44.entities.Job.list("-job_date", 200).then((all) => { setJobs(all); setLoading(false); });
+  const load = useCallback(() => {
+    return base44.entities.Job.list("-job_date", 200).then((all) => { setJobs(all); setLoading(false); });
   }, []);
+
+  useEffect(() => { load(); }, [load]);
+  usePullToRefresh(load);
 
   const filtered = jobs.filter((j) => {
     if (filter !== "all" && j.status !== filter) return false;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Plus, Mail, Phone, MapPin, Pencil, Trash2, Users } from "lucide-react";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +20,7 @@ export default function Clients() {
 
   const load = () => base44.entities.Client.list("-created_date").then(setClients);
   useEffect(() => { load(); }, []);
+  usePullToRefresh(load);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -63,8 +65,8 @@ export default function Clients() {
                 <div className="flex items-start justify-between">
                   <h3 className="font-bold text-robur-black">{c.name}</h3>
                   <div className="flex gap-1">
-                    <button onClick={() => openEdit(c)} className="p-1.5 text-slate-400 hover:text-robur-black"><Pencil className="w-4 h-4" /></button>
-                    <button onClick={() => remove(c.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                    <button aria-label={`Edit ${c.name}`} onClick={() => openEdit(c)} className="w-11 h-11 flex items-center justify-center rounded-lg text-slate-400 hover:text-robur-black hover:bg-slate-100"><Pencil className="w-4 h-4" /></button>
+                    <button aria-label={`Delete ${c.name}`} onClick={() => remove(c.id)} className="w-11 h-11 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 </div>
                 <div className="mt-2 space-y-1 text-sm text-slate-500">

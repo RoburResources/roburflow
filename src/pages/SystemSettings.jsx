@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import { PageTransition } from "@/components/motion/Motion";
 import PageHeader from "@/components/shared/PageHeader";
+import DeleteAccountSection from "@/components/settings/DeleteAccountSection";
 
 const DEFAULTS = {
   company_name: "Robur Resources",
@@ -25,10 +26,10 @@ const DEFAULTS = {
 
 function Section({ icon: Icon, title, children }) {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm mb-5">
+    <div className="bg-background rounded-2xl p-5 border border-border shadow-sm mb-5">
       <div className="flex items-center gap-2 mb-4">
         <Icon className="w-4 h-4 text-robur-goldDark" />
-        <h2 className="font-bold text-robur-black">{title}</h2>
+        <h2 className="font-bold text-foreground">{title}</h2>
       </div>
       {children}
     </div>
@@ -79,21 +80,21 @@ export default function SystemSettings() {
       <Section icon={Cpu} title="AI Service">
         <Label>Vision Model</Label>
         <Input value={form.ai_model} onChange={(e) => set("ai_model", e.target.value)} className="mt-1 h-11" />
-        <p className="text-xs text-slate-400 mt-2">
+        <p className="text-xs text-muted-foreground mt-2">
           Docket extraction runs on your connected Hugging Face account. API keys are managed securely in your workspace connectors, not here.
         </p>
       </Section>
 
       <Section icon={Bell} title="Notifications">
         <div className="flex items-center justify-between py-2">
-          <div><div className="text-sm font-semibold text-robur-black">Notify on job submission</div><div className="text-xs text-slate-400">Alert admins when a driver submits.</div></div>
+          <div><div className="text-sm font-semibold text-foreground">Notify on job submission</div><div className="text-xs text-muted-foreground">Alert admins when a driver submits.</div></div>
           <Switch checked={form.notify_on_submission} onCheckedChange={(v) => set("notify_on_submission", v)} />
         </div>
-        <div className="flex items-center justify-between py-2 border-t border-slate-100">
-          <div><div className="text-sm font-semibold text-robur-black">Notify on incident report</div><div className="text-xs text-slate-400">Alert admins on new incidents.</div></div>
+        <div className="flex items-center justify-between py-2 border-t border-border">
+          <div><div className="text-sm font-semibold text-foreground">Notify on incident report</div><div className="text-xs text-muted-foreground">Alert admins on new incidents.</div></div>
           <Switch checked={form.notify_on_incident} onCheckedChange={(v) => set("notify_on_incident", v)} />
         </div>
-        <div className="pt-3 border-t border-slate-100 mt-2">
+        <div className="pt-3 border-t border-border mt-2">
           <Label>CC Email on client sends</Label>
           <Input value={form.cc_email} onChange={(e) => set("cc_email", e.target.value)} className="mt-1 h-11" />
         </div>
@@ -102,6 +103,10 @@ export default function SystemSettings() {
       <Button onClick={save} disabled={saving} className="w-full h-12 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
         {saving ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Saving…</> : <><Save className="w-5 h-5 mr-2" /> Save Settings</>}
       </Button>
+
+      <div className="mt-6">
+        <DeleteAccountSection />
+      </div>
     </PageTransition>
   );
 }

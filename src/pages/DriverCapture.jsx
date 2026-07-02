@@ -158,7 +158,7 @@ export default function DriverCapture() {
     }
   };
 
-  if (!job) return <div className="p-8 text-slate-400 text-sm text-center">Loading job…</div>;
+  if (!job) return <div className="p-8 text-muted-foreground text-sm text-center">Loading job…</div>;
 
   const wrap = (children) => <div className="p-4 max-w-lg mx-auto pb-28">{children}</div>;
   const bottomBar = (label, onClick, disabled) => (
@@ -174,8 +174,8 @@ export default function DriverCapture() {
     return (
       <div className="p-6 max-w-lg mx-auto flex flex-col items-center justify-center min-h-[70vh] text-center">
         <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-5"><Check className="w-10 h-10 text-green-600" /></div>
-        <h1 className="text-2xl font-extrabold text-robur-black mb-2">Job Submitted</h1>
-        <p className="text-slate-500 mb-8">The documents have been generated and sent to the office for review.</p>
+        <h1 className="text-2xl font-extrabold text-foreground mb-2">Job Submitted</h1>
+        <p className="text-muted-foreground mb-8">The documents have been generated and sent to the office for review.</p>
         <Button onClick={() => navigate("/")} className="w-full h-12 bg-robur-black hover:bg-black text-white font-bold">Back to Jobs</Button>
       </div>
     );
@@ -185,7 +185,7 @@ export default function DriverCapture() {
     return (
       <div className="p-6 max-w-lg mx-auto flex flex-col items-center justify-center min-h-[70vh] text-center">
         <Loader2 className="w-10 h-10 text-robur-goldDark animate-spin mb-4" />
-        <p className="text-slate-500">Generating documents…</p>
+        <p className="text-muted-foreground">Generating documents…</p>
       </div>
     );
   }
@@ -195,7 +195,7 @@ export default function DriverCapture() {
     return wrap(<>
       <StepHeader title={job.client_name} subtitle="Job overview" stepIndex={0} totalSteps={9} onBack={() => navigate("/")} />
       <JobOverviewCard job={job} />
-      {job.notes && <p className="mt-4 text-sm text-slate-600 bg-robur-goldLight/40 rounded-xl p-3">📋 {job.notes}</p>}
+      {job.notes && <p className="mt-4 text-sm text-foreground/70 bg-robur-goldLight/40 dark:bg-robur-gold/10 rounded-xl p-3">📋 {job.notes}</p>}
       {bottomBar("Go — Navigate to Site", () => setStep(STEPS.NAV_SITE))}
     </>);
   }
@@ -217,7 +217,7 @@ export default function DriverCapture() {
         <div className="flex items-center gap-2 mb-3"><Camera className="w-4 h-4 text-robur-goldDark" /><h3 className="font-bold text-sm">Material photo</h3></div>
         <p className="text-xs text-muted-foreground mb-3">Take a clear photo of the material at the site.</p>
         <PhotoCapture photos={materialPhotos} onChange={onMaterialChange} />
-        {meta.material?.latitude && <p className="text-[11px] text-slate-400 mt-2">📍 Location & time captured</p>}
+        {meta.material?.latitude && <p className="text-[11px] text-muted-foreground mt-2">📍 Location & time captured</p>}
       </div>
       {bottomBar("Preview Service Docket", () => setStep(STEPS.PREVIEW), materialPhotos.length === 0)}
     </>);
@@ -288,9 +288,9 @@ export default function DriverCapture() {
   if (step === STEPS.WEIGHBRIDGE) {
     return wrap(<>
       <StepHeader title="Weighbridge Docket" subtitle="Scan to auto-fill documents" stepIndex={8} totalSteps={9} onBack={() => setStep(STEPS.FLOOR)} />
-      <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm mb-4">
+      <div className="bg-background rounded-2xl p-4 border border-border shadow-sm mb-4">
         <div className="flex items-center gap-2 mb-3"><ScanLine className="w-4 h-4 text-robur-goldDark" /><h3 className="font-bold text-sm">Photograph the ticket</h3></div>
-        <p className="text-xs text-slate-500 mb-3">Take a clear photo of the weighbridge docket. The system will read it and fill your documents.</p>
+        <p className="text-xs text-muted-foreground mb-3">Take a clear photo of the weighbridge docket. The system will read it and fill your documents.</p>
         <PhotoCapture photos={bridgePhotos} onChange={setBridgePhotos} />
         {bridgePhotos.length > 0 && (
           <Button onClick={runBridgeExtraction} disabled={extracting} className="w-full mt-3 h-11 bg-robur-black hover:bg-black text-white font-semibold">
@@ -300,7 +300,7 @@ export default function DriverCapture() {
       </div>
 
       {docTypes.map((dt) => (
-        <div key={dt} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm mb-4">
+        <div key={dt} className="bg-background rounded-2xl p-4 border border-border shadow-sm mb-4">
           <h3 className="font-bold text-sm mb-3">{DOC_TYPE_LABELS[dt]}</h3>
           <DynamicFields fields={getDocFields(dt)} data={docStates[dt]?.data || {}} onChange={(data) => updateDoc(dt, data)} />
         </div>

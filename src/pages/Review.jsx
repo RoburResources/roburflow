@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { FileCheck, ChevronRight, Inbox } from "lucide-react";
 import DocTypeChips from "@/components/jobs/DocTypeChips";
 import { PageTransition, Stagger, StaggerItem, Pressable } from "@/components/motion/Motion";
+import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 
 export default function Review() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    base44.entities.Job.filter({ status: "submitted" }, "-submitted_at", 100).then((all) => {
+  const load = useCallback(() => {
+    return base44.entities.Job.filter({ status: "submitted" }, "-submitted_at", 100).then((all) => {
       setJobs(all);
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => { load(); }, [load]);
+  usePullToRefresh(load);
 
   return (
     <PageTransition className="p-4 md:p-8 max-w-3xl mx-auto">
