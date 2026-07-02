@@ -6,6 +6,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider } from '@/lib/AuthContext';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import RoleRoute from '@/components/RoleRoute';
 import Layout from '@/components/Layout';
 
 // Auth pages
@@ -62,45 +63,50 @@ function App() {
 
             <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
               <Route element={<Layout />}>
+                {/* ---- Shared / driver-accessible routes ---- */}
                 <Route path="/" element={<Home />} />
-                <Route path="/jobs" element={<Jobs />} />
-                <Route path="/jobs/new" element={<JobForm />} />
-                <Route path="/jobs/:id" element={<JobDetail />} />
-                <Route path="/jobs/:id/edit" element={<JobForm />} />
-                <Route path="/clients" element={<Clients />} />
-                <Route path="/drivers" element={<Drivers />} />
-                <Route path="/review" element={<Review />} />
-                <Route path="/review/:id" element={<ReviewDetail />} />
-                <Route path="/settlements" element={<Settlements />} />
-                <Route path="/document-archive" element={<DocumentArchive />} />
-                <Route path="/activity-logs" element={<ActivityLogs />} />
-                <Route path="/quick-templates" element={<QuickTemplates />} />
-                <Route path="/system-settings" element={<SystemSettings />} />
-                <Route path="/performance-analytics" element={<PerformanceAnalytics />} />
-                <Route path="/inventory-assets" element={<InventoryAssets />} />
-                <Route path="/incident-reports" element={<IncidentReports />} />
-                <Route path="/client-access" element={<ClientAccess />} />
-                <Route path="/maintenance-schedule" element={<MaintenanceSchedule />} />
-                <Route path="/fuel-logs" element={<FuelLogs />} />
-                <Route path="/driver-onboarding" element={<DriverOnboarding />} />
-                <Route path="/dispatch-calendar" element={<DispatchCalendar />} />
-                <Route path="/asset-inventory" element={<AssetInventory />} />
-                <Route path="/service-templates" element={<QuickTemplates />} />
-                {/* New feature pages */}
-                <Route path="/safety-briefings" element={<SafetyBriefings />} />
-                <Route path="/expense-tracker" element={<ExpenseTracker />} />
-                <Route path="/driver-certifications" element={<DriverCertifications />} />
-                <Route path="/maintenance-alerts" element={<MaintenanceAlerts />} />
-                <Route path="/client-feedback" element={<ClientFeedback />} />
-                <Route path="/incident-reporting" element={<IncidentReports />} />
-                <Route path="/quick-references" element={<KnowledgeLibrary title="Quick References" subtitle="Safety procedures, company policies and instructional guides." />} />
-                <Route path="/resource-library" element={<KnowledgeLibrary title="Resource Library" subtitle="Company policies, manuals and standard operating procedures." />} />
-                <Route path="/fleet-overview" element={<AssetInventory />} />
-                <Route path="/document-verification" element={<DocumentVerification />} />
-                <Route path="/client-portal" element={<ClientPortal />} />
-                <Route path="/compliance-dashboard" element={<ComplianceDashboard />} />
                 {/* Driver capture flow */}
                 <Route path="/job/:id" element={<DriverCapture />} />
+                {/* Staff & driver self-service */}
+                <Route path="/safety-briefings" element={<SafetyBriefings />} />
+                <Route path="/expense-tracker" element={<ExpenseTracker />} />
+                <Route path="/incident-reporting" element={<IncidentReports />} />
+                <Route path="/quick-references" element={<KnowledgeLibrary title="Quick References" subtitle="Safety procedures, company policies and instructional guides." />} />
+
+                {/* ---- Admin-only routes ---- */}
+                <Route element={<RoleRoute />}>
+                  <Route path="/jobs" element={<Jobs />} />
+                  <Route path="/jobs/new" element={<JobForm />} />
+                  <Route path="/jobs/:id" element={<JobDetail />} />
+                  <Route path="/jobs/:id/edit" element={<JobForm />} />
+                  <Route path="/clients" element={<Clients />} />
+                  <Route path="/drivers" element={<Drivers />} />
+                  <Route path="/review" element={<Review />} />
+                  <Route path="/review/:id" element={<ReviewDetail />} />
+                  <Route path="/settlements" element={<Settlements />} />
+                  <Route path="/document-archive" element={<DocumentArchive />} />
+                  <Route path="/activity-logs" element={<ActivityLogs />} />
+                  <Route path="/quick-templates" element={<QuickTemplates />} />
+                  <Route path="/system-settings" element={<SystemSettings />} />
+                  <Route path="/performance-analytics" element={<PerformanceAnalytics />} />
+                  <Route path="/inventory-assets" element={<InventoryAssets />} />
+                  <Route path="/incident-reports" element={<IncidentReports />} />
+                  <Route path="/client-access" element={<ClientAccess />} />
+                  <Route path="/maintenance-schedule" element={<MaintenanceSchedule />} />
+                  <Route path="/fuel-logs" element={<FuelLogs />} />
+                  <Route path="/driver-onboarding" element={<DriverOnboarding />} />
+                  <Route path="/dispatch-calendar" element={<DispatchCalendar />} />
+                  <Route path="/asset-inventory" element={<AssetInventory />} />
+                  <Route path="/service-templates" element={<QuickTemplates />} />
+                  <Route path="/driver-certifications" element={<DriverCertifications />} />
+                  <Route path="/maintenance-alerts" element={<MaintenanceAlerts />} />
+                  <Route path="/client-feedback" element={<ClientFeedback />} />
+                  <Route path="/resource-library" element={<KnowledgeLibrary title="Resource Library" subtitle="Company policies, manuals and standard operating procedures." />} />
+                  <Route path="/fleet-overview" element={<AssetInventory />} />
+                  <Route path="/document-verification" element={<DocumentVerification />} />
+                  <Route path="/client-portal" element={<ClientPortal />} />
+                  <Route path="/compliance-dashboard" element={<ComplianceDashboard />} />
+                </Route>
               </Route>
             </Route>
 

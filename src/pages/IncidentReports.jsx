@@ -30,8 +30,13 @@ export default function IncidentReports() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(EMPTY);
 
-  const load = () => base44.entities.IncidentReport.list("-created_date").then(setReports);
-  useEffect(() => { load(); }, []);
+  const load = async () => {
+    const list = isAdmin
+      ? await base44.entities.IncidentReport.list("-created_date")
+      : await base44.entities.IncidentReport.filter({ reported_by_name: user?.full_name || user?.email }, "-created_date");
+    setReports(list);
+  };
+  useEffect(() => { if (user) load(); }, [user, isAdmin]);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
