@@ -37,6 +37,7 @@ import MaintenanceSchedule from '@/pages/MaintenanceSchedule';
 import FuelLogs from '@/pages/FuelLogs';
 import DriverOnboarding from '@/pages/DriverOnboarding';
 import DispatchCalendar from '@/pages/DispatchCalendar';
+import AssetInventory from '@/pages/AssetInventory';
 
 function App() {
   return (
@@ -74,6 +75,8 @@ function App() {
                 <Route path="/fuel-logs" element={<FuelLogs />} />
                 <Route path="/driver-onboarding" element={<DriverOnboarding />} />
                 <Route path="/dispatch-calendar" element={<DispatchCalendar />} />
+                <Route path="/asset-inventory" element={<AssetInventory />} />
+                <Route path="/service-templates" element={<QuickTemplates />} />
                 {/* Driver capture flow */}
                 <Route path="/job/:id" element={<DriverCapture />} />
               </Route>
