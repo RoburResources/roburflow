@@ -137,12 +137,21 @@ button, nav, [role="navigation"], .tab-bar {
 
   body {
     @apply text-foreground font-body;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Blurred fixed background layer behind all app content */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     background-image: url('https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/391fb5e6a_AB4.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
     background-repeat: no-repeat;
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: touch;
+    filter: blur(12px);
+    transform: scale(1.1);
   }
 }
