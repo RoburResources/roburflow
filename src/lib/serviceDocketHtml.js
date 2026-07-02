@@ -1,5 +1,6 @@
 import html2canvas from "html2canvas";
 import { base44 } from "@/api/base44Client";
+import { ICONS } from "@/lib/docketIcons";
 
 const LOGO_DARK = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/71b5125fc_03_primary_horizontal_dark_transparent.png";
 const WATERMARK = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/71b5125fc_03_primary_horizontal_dark_transparent.png";
@@ -34,17 +35,17 @@ export async function generateServiceDocketImage(d, docNo, evidencePhotos, signa
       </div>
 
       <div class="grid3" style="margin-top:26px;">
-        ${field("&#128100;", "CLIENT NAME", d.client_name)}
-        ${field("&#128205;", "SITE ADDRESS", d.site_address)}
-        ${field("&#128197;", "SERVICE DATE", d.service_date)}
+        ${field(ICONS.user, "CLIENT NAME", d.client_name)}
+        ${field(ICONS.pin, "SITE ADDRESS", d.site_address)}
+        ${field(ICONS.calendar, "SERVICE DATE", d.service_date)}
       </div>
       <div class="grid3" style="margin-top:22px;">
-        ${field("&#128203;", "JOB NO.", d.job_no)}
-        ${field("&#9728;", "SERVICE TYPE", d.service_type)}
-        ${field("&#128209;", "NOTES / SERVICE DETAILS", d.notes)}
+        ${field(ICONS.clipboard, "JOB NO.", d.job_no)}
+        ${field(ICONS.sun, "SERVICE TYPE", d.service_type)}
+        ${field(ICONS.notes, "NOTES / SERVICE DETAILS", d.notes)}
       </div>
 
-      <div class="evtag">&#128247;&nbsp; SERVICE EVIDENCE</div>
+      <div class="evtag"><span class="evtagico">${ICONS.camera}</span> SERVICE EVIDENCE</div>
       <div class="evbox">
         ${photo
           ? `<img src="${esc(photo)}" crossorigin="anonymous" class="evimg" />`
@@ -58,7 +59,7 @@ export async function generateServiceDocketImage(d, docNo, evidencePhotos, signa
 
       <div class="confirm">
         <div class="cbar">
-          <div class="cshield">&#128737;</div>
+          <div class="cshield">${ICONS.shield}</div>
           <div class="ctext"><span>SERVICE</span><span>CONFIRMATION</span></div>
         </div>
         <div class="cgold"></div>
@@ -97,16 +98,19 @@ export async function generateServiceDocketImage(d, docNo, evidencePhotos, signa
   const style = `
     #robur-sd * { box-sizing:border-box; }
     #robur-sd .hdr { display:flex; align-items:flex-start; justify-content:space-between; }
-    #robur-sd .rule { height:5px; background:#1A1A1A; margin-top:10px; position:relative; }
-    #robur-sd .rule:after { content:""; position:absolute; right:0; top:0; width:44px; height:5px; background:#F5A800; }
+    #robur-sd .rule { height:4px; background:#1A1A1A; margin-top:12px; margin-left:38%; position:relative; border-radius:2px; }
+    #robur-sd .rule:after { content:""; position:absolute; right:0; top:0; width:52px; height:4px; background:#F5A800; border-radius:2px; }
     #robur-sd .grid3 { display:flex; gap:26px; }
     #robur-sd .grid3 .fld { flex:1; }
     #robur-sd .fld { display:flex; gap:10px; }
-    #robur-sd .ficon { color:#F5A800; font-size:15px; line-height:1; padding-top:1px; }
+    #robur-sd .ficon { line-height:0; padding-top:1px; }
+    #robur-sd .ficon svg { display:block; }
     #robur-sd .fbody { flex:1; }
     #robur-sd .flbl { font-size:8px; font-weight:700; letter-spacing:.4px; color:#3a3a3a; }
     #robur-sd .fline { border-bottom:1px solid #cfcfcf; margin-top:20px; min-height:16px; font-size:12px; }
-    #robur-sd .evtag { display:inline-flex; align-items:center; background:#1A1A1A; color:#fff; font-size:9px; font-weight:700; letter-spacing:.4px; padding:7px 14px; margin-top:30px; }
+    #robur-sd .evtag { display:inline-flex; align-items:center; gap:6px; background:#1A1A1A; color:#fff; font-size:9px; font-weight:700; letter-spacing:.4px; padding:7px 14px; margin-top:30px; }
+    #robur-sd .evtagico { line-height:0; }
+    #robur-sd .evtagico svg { display:block; width:13px; height:13px; }
     #robur-sd .evbox { position:relative; background:#f4f4f4; height:430px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
     #robur-sd .evimg { width:100%; height:100%; object-fit:cover; }
     #robur-sd .evwm { position:absolute; width:340px; opacity:.06; top:50%; left:50%; transform:translate(-50%,-58%); }
@@ -116,7 +120,8 @@ export async function generateServiceDocketImage(d, docNo, evidencePhotos, signa
     #robur-sd .evhint { color:#bdbdbd; font-size:9px; margin-top:4px; }
     #robur-sd .confirm { display:flex; align-items:stretch; background:#1A1A1A; margin-top:20px; min-height:64px; }
     #robur-sd .cbar { display:flex; align-items:center; gap:10px; padding:0 16px; }
-    #robur-sd .cshield { color:#F5A800; font-size:20px; }
+    #robur-sd .cshield { line-height:0; }
+    #robur-sd .cshield svg { display:block; width:22px; height:22px; }
     #robur-sd .ctext { display:flex; flex-direction:column; color:#fff; font-size:11px; font-weight:800; line-height:1.25; }
     #robur-sd .cgold { width:3px; background:#F5A800; }
     #robur-sd .cbody { flex:1; background:#fff; padding:12px 18px; font-size:10px; line-height:1.5; }

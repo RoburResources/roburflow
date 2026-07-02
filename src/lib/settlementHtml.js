@@ -1,5 +1,6 @@
 import html2canvas from "html2canvas";
 import { base44 } from "@/api/base44Client";
+import { ICONS } from "@/lib/docketIcons";
 
 const LOGO_DARK = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/71b5125fc_03_primary_horizontal_dark_transparent.png";
 const SIGNATURE = "https://media.base44.com/images/public/6a45ec89b86612f7554c9e39/71b5125fc_03_primary_horizontal_dark_transparent.png";
@@ -68,7 +69,7 @@ export async function generateSettlementImage(summary) {
 
       <div class="two footer-sec" style="margin-top:26px;">
         <div class="col ty">
-          <div class="tyshield">&#128737;</div>
+          <div class="tyshield">${ICONS.shield}</div>
           <div class="tygold"></div>
           <div class="tytext">
             <div class="tyhead">THANK YOU</div>
@@ -127,7 +128,8 @@ export async function generateSettlementImage(summary) {
     #robur-dss .tsep { width:1px; height:44px; background:#F5A800; }
     #robur-dss .tval { flex:1; text-align:right; padding-right:24px; font-size:16px; border-bottom:1px solid #999; margin:0 24px; }
     #robur-dss .footer-sec .ty { display:flex; align-items:flex-start; gap:8px; }
-    #robur-dss .tyshield { color:#F5A800; font-size:18px; }
+    #robur-dss .tyshield { line-height:0; }
+    #robur-dss .tyshield svg { display:block; width:20px; height:20px; }
     #robur-dss .tygold { width:3px; align-self:stretch; background:#F5A800; }
     #robur-dss .tyhead { font-size:16px; font-weight:800; }
     #robur-dss .tysub { font-size:9px; color:#8a8a8a; margin-top:3px; }
