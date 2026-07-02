@@ -98,12 +98,12 @@ export default function Settlements() {
       <h1 className="text-2xl font-extrabold text-robur-black mb-1">Daily Settlement Summary</h1>
       <p className="text-sm text-slate-500 mb-6">Aggregate completed tickets into a payment summary for a client.</p>
 
-      <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm mb-5">
+      <div className="glass-card p-5 mb-5">
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div><Label>From Date</Label><Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="mt-1 h-11" /></div>
           <div><Label>To Date</Label><Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="mt-1 h-11" /></div>
         </div>
-        <Button onClick={buildFromRange} disabled={loading} variant="outline" className="w-full h-11">
+        <Button onClick={buildFromRange} disabled={loading} className="w-full h-11 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
           <Calculator className="w-4 h-4 mr-2" /> Pull Tickets in Range
         </Button>
       </div>
@@ -121,32 +121,32 @@ export default function Settlements() {
       </div>
 
       {items.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-8 text-center text-slate-500 text-sm mb-5">
+        <div className="glass-card border-dashed p-8 text-center text-slate-500 text-sm mb-5">
           <Receipt className="w-8 h-8 text-slate-300 mx-auto mb-2" />
           Pull tickets from a date range, or add rows manually.
         </div>
       ) : (
         <div className="space-y-2 mb-5">
           {items.map((it, i) => (
-            <div key={i} className="bg-white rounded-xl p-3 border border-slate-100 shadow-sm">
+            <div key={i} className="bg-white/50 backdrop-blur-md rounded-xl p-3 shadow-sm">
               <div className="grid grid-cols-2 gap-2">
                 <Input value={it.ref} onChange={(e) => updateItem(i, "ref", e.target.value)} placeholder="Ref" className="h-10 text-sm" />
                 <Input value={it.material} onChange={(e) => updateItem(i, "material", e.target.value)} placeholder="Material" className="h-10 text-sm" />
                 <Input value={it.net_weight} onChange={(e) => updateItem(i, "net_weight", e.target.value)} placeholder="Net (t)" className="h-10 text-sm" />
                 <Input value={it.rate} onChange={(e) => updateItem(i, "rate", e.target.value)} placeholder="Rate" className="h-10 text-sm" />
                 <Input value={it.amount} onChange={(e) => updateItem(i, "amount", e.target.value)} placeholder="Amount (AUD)" className="h-10 text-sm" />
-                <button onClick={() => removeItem(i)} className="flex items-center justify-center text-red-500 border border-slate-200 rounded-md h-10"><Trash2 className="w-4 h-4" /></button>
+                <button onClick={() => removeItem(i)} className="flex items-center justify-center text-red-500 bg-white/50 rounded-md h-10"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      <div className="bg-robur-black text-white rounded-2xl p-5 mb-5">
+      <div className="glass-card p-5 mb-5">
         <div className="grid grid-cols-3 gap-4 text-center">
-          <div><div className="text-xs text-white/50">Total Net</div><div className="text-lg font-extrabold">{totalNet.toFixed(2)} t</div></div>
-          <div><div className="text-xs text-white/50">Total Payment</div><div className="text-lg font-extrabold text-robur-gold">${totalPayment.toFixed(2)}</div></div>
-          <div><div className="text-xs text-white/50">Total Loads</div><div className="text-lg font-extrabold">{items.length}</div></div>
+          <div><div className="text-xs text-slate-500">Total Net</div><div className="text-lg font-extrabold text-robur-black">{totalNet.toFixed(2)} t</div></div>
+          <div><div className="text-xs text-slate-500">Total Payment</div><div className="text-lg font-extrabold text-robur-goldDark">${totalPayment.toFixed(2)}</div></div>
+          <div><div className="text-xs text-slate-500">Total Loads</div><div className="text-lg font-extrabold text-robur-black">{items.length}</div></div>
         </div>
       </div>
 
@@ -156,7 +156,7 @@ export default function Settlements() {
 
       {pdfUrl && (
         <a href={pdfUrl} target="_blank" rel="noreferrer" className="block mt-4">
-          <Button variant="outline" className="w-full h-12"><FileDown className="w-5 h-5 mr-2" /> Open Generated Image</Button>
+          <Button className="w-full h-12 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold"><FileDown className="w-5 h-5 mr-2" /> Open Generated Image</Button>
         </a>
       )}
     </div>

@@ -61,7 +61,7 @@ export default function Jobs() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
-              filter === f ? "bg-robur-black text-white" : "bg-white text-slate-500 border border-slate-200"
+              filter === f ? "bg-robur-gold text-robur-black" : "bg-white/50 text-slate-600"
             }`}
           >
             {FILTER_LABELS[f]}
@@ -72,7 +72,7 @@ export default function Jobs() {
       {loading ? (
         <div className="text-slate-400 text-sm py-8 text-center">Loading…</div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 text-center text-slate-500">
+        <div className="glass-card border-dashed p-10 text-center text-slate-500">
           No jobs found.
         </div>
       ) : (
@@ -80,7 +80,7 @@ export default function Jobs() {
           {filtered.map((job) => (
             <StaggerItem key={job.id}>
             <Pressable>
-            <Link to={`/jobs/${job.id}`} className="block bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <Link to={`/jobs/${job.id}`} className="block glass-card p-4 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">

@@ -61,26 +61,24 @@ export default function DispatchBoard() {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-8">
+    <div className="glass-card p-4 mb-8">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-robur-black flex items-center justify-center">
-            <CalendarDays className="w-5 h-5 text-robur-gold" />
-          </div>
+          <CalendarDays className="w-6 h-6 text-robur-gold" />
           <div>
             <h2 className="text-lg font-bold text-robur-black leading-tight">Dispatch Calendar</h2>
             <p className="text-xs text-slate-400">Drag jobs onto a driver to assign</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={() => shiftDay(-1)}><ChevronLeft className="w-4 h-4" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => shiftDay(-1)} className="text-robur-goldDark hover:bg-robur-gold/20"><ChevronLeft className="w-4 h-4" /></Button>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="h-9 rounded-md border border-input px-3 text-sm font-semibold text-robur-black"
+            className="h-9 rounded-md bg-white/50 px-3 text-sm font-semibold text-robur-black focus:outline-none"
           />
-          <Button variant="outline" size="icon" onClick={() => shiftDay(1)}><ChevronRight className="w-4 h-4" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => shiftDay(1)} className="text-robur-goldDark hover:bg-robur-gold/20"><ChevronRight className="w-4 h-4" /></Button>
         </div>
       </div>
 
@@ -110,8 +108,8 @@ function DispatchColumn({ id, title, subtitle, jobs, tone }) {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className={`shrink-0 w-64 rounded-xl border p-2.5 transition-colors ${
-            snapshot.isDraggingOver ? "border-robur-gold bg-robur-goldLight/40" : "border-slate-150 bg-slate-50"
+          className={`shrink-0 w-64 rounded-xl p-2.5 transition-colors ${
+            snapshot.isDraggingOver ? "bg-robur-gold/25" : "bg-white/40"
           }`}
         >
           <div className="flex items-center justify-between mb-2 px-1">
@@ -119,7 +117,7 @@ function DispatchColumn({ id, title, subtitle, jobs, tone }) {
               <div className="font-bold text-sm text-robur-black truncate">{title}</div>
               <div className="text-[10px] text-slate-400 truncate">{subtitle}</div>
             </div>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${tone === "unassigned" ? "bg-slate-200 text-slate-600" : "bg-robur-black text-robur-gold"}`}>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-robur-gold text-robur-black">
               {jobs.length}
             </span>
           </div>
@@ -138,7 +136,7 @@ function DispatchColumn({ id, title, subtitle, jobs, tone }) {
                     ref={prov.innerRef}
                     {...prov.draggableProps}
                     {...prov.dragHandleProps}
-                    className={`bg-white rounded-lg p-2.5 border shadow-sm ${snap.isDragging ? "border-robur-gold shadow-lg" : "border-slate-100"}`}
+                    className={`bg-white/60 backdrop-blur-md rounded-lg p-2.5 transition-shadow ${snap.isDragging ? "shadow-lg" : "shadow-sm"}`}
                   >
                     <div className="flex items-start gap-1.5">
                       <GripVertical className="w-3.5 h-3.5 text-slate-300 mt-0.5 shrink-0" />

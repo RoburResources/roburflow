@@ -10,12 +10,10 @@ import DispatchBoard from "@/components/dispatch/DispatchBoard";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 
-function Stat({ icon: Icon, label, value, accent }) {
+function Stat({ icon: Icon, label, value }) {
   return (
     <Pop className="glass-card p-4">
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${accent}`}>
-        <Icon className="w-5 h-5" />
-      </div>
+      <Icon className="w-6 h-6 text-robur-gold mb-3" />
       <div className="text-2xl font-extrabold text-robur-black">{value}</div>
       <div className="text-xs text-slate-500 mt-0.5">{label}</div>
     </Pop>
@@ -61,10 +59,10 @@ export default function Dashboard() {
       <PullToRefreshIndicator isRefreshing={isRefreshing} />
 
       <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <StaggerItem><Stat icon={ListChecks} label="Assigned" value={counts.assigned} accent="bg-slate-100 text-slate-600" /></StaggerItem>
-        <StaggerItem><Stat icon={Clock} label="In Progress" value={counts.in_progress} accent="bg-blue-100 text-blue-600" /></StaggerItem>
-        <StaggerItem><Stat icon={FileCheck} label="Awaiting Review" value={counts.submitted} accent="bg-robur-goldLight text-robur-goldDark" /></StaggerItem>
-        <StaggerItem><Stat icon={Send} label="Sent to Client" value={counts.sent} accent="bg-green-100 text-green-600" /></StaggerItem>
+        <StaggerItem><Stat icon={ListChecks} label="Assigned" value={counts.assigned} /></StaggerItem>
+        <StaggerItem><Stat icon={Clock} label="In Progress" value={counts.in_progress} /></StaggerItem>
+        <StaggerItem><Stat icon={FileCheck} label="Awaiting Review" value={counts.submitted} /></StaggerItem>
+        <StaggerItem><Stat icon={Send} label="Sent to Client" value={counts.sent} /></StaggerItem>
       </Stagger>
 
       <DispatchBoard />
