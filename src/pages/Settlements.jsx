@@ -5,7 +5,7 @@ import { Receipt, Loader2, FileDown, Calculator, Plus, Trash2 } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { generateSettlementPdf } from "@/lib/settlementPdf";
+import { generateSettlementImage } from "@/lib/settlementHtml";
 
 export default function Settlements() {
   const [docs, setDocs] = useState([]);
@@ -79,7 +79,7 @@ export default function Settlements() {
     setGenerating(true);
     setPdfUrl("");
     try {
-      const url = await generateSettlementPdf({
+      const url = await generateSettlementImage({
         ...meta,
         settlement_period: from === to ? format(new Date(from), "d MMM yyyy") : `${format(new Date(from), "d MMM")} – ${format(new Date(to), "d MMM yyyy")}`,
         total_net_weight: totalNet.toFixed(2),
@@ -151,12 +151,12 @@ export default function Settlements() {
       </div>
 
       <Button onClick={generate} disabled={generating || items.length === 0} className="w-full h-12 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
-        {generating ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Generating…</> : <><FileDown className="w-5 h-5 mr-2" /> Generate Summary PDF</>}
+        {generating ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Generating…</> : <><FileDown className="w-5 h-5 mr-2" /> Generate Summary Image</>}
       </Button>
 
       {pdfUrl && (
         <a href={pdfUrl} target="_blank" rel="noreferrer" className="block mt-4">
-          <Button variant="outline" className="w-full h-12"><FileDown className="w-5 h-5 mr-2" /> Open Generated PDF</Button>
+          <Button variant="outline" className="w-full h-12"><FileDown className="w-5 h-5 mr-2" /> Open Generated Image</Button>
         </a>
       )}
     </div>
