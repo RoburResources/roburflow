@@ -25,6 +25,9 @@ export default function JobForm() {
     client_id: "",
     client_name: "",
     client_email: "",
+    contact_name: "",
+    contact_phone: "",
+    site_name: "",
     site_address: "",
     job_date: format(new Date(), "yyyy-MM-dd"),
     assigned_driver_id: "",
@@ -51,6 +54,9 @@ export default function JobForm() {
       client_id: clientId,
       client_name: c?.name || "",
       client_email: c?.email || "",
+      contact_name: f.contact_name || c?.contact_name || "",
+      contact_phone: f.contact_phone || c?.contact_phone || "",
+      site_name: f.site_name || c?.site_name || "",
       site_address: f.site_address || c?.site_address || "",
     }));
   };
@@ -109,6 +115,22 @@ export default function JobForm() {
             <Label>Job Date</Label>
             <Input type="date" value={form.job_date} onChange={(e) => set("job_date", e.target.value)} className="mt-1 h-11" />
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label>Contact Name</Label>
+            <Input value={form.contact_name} onChange={(e) => set("contact_name", e.target.value)} placeholder="On-site contact" className="mt-1 h-11" />
+          </div>
+          <div>
+            <Label>Contact Phone</Label>
+            <Input value={form.contact_phone} onChange={(e) => set("contact_phone", e.target.value)} placeholder="On-site phone" className="mt-1 h-11" />
+          </div>
+        </div>
+
+        <div>
+          <Label>Site Name</Label>
+          <Input value={form.site_name} onChange={(e) => set("site_name", e.target.value)} placeholder="e.g. Shine Auto Parts" className="mt-1 h-11" />
         </div>
 
         <div>
