@@ -93,7 +93,7 @@ export default function Layout() {
     return (
       <div className="min-h-screen flex flex-col">
         <header className="sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between shadow-lg select-none" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-          <RoburLogo dark />
+          <RoburLogo showText={false} />
           <button onClick={logout} aria-label="Sign out" className="text-white/70 hover:text-white">
             <LogOut className="w-5 h-5" />
           </button>
@@ -112,7 +112,7 @@ export default function Layout() {
     <div className="min-h-screen flex">
       <aside className="hidden md:flex w-64 flex-col bg-robur-black text-white sticky top-0 h-screen">
         <div className="px-5 py-5 border-b border-white/10">
-          <RoburLogo dark />
+          <RoburLogo showText={false} />
         </div>
         <nav className="flex-1 p-3 space-y-4 overflow-y-auto thin-scroll fade-edges select-none">
           {adminNavGroups.map((group) => (
@@ -152,7 +152,7 @@ export default function Layout() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
         <header className="md:hidden sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between select-none" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-          <RoburLogo dark />
+          <RoburLogo showText={false} />
           <button onClick={logout} aria-label="Sign out"><LogOut className="w-5 h-5 text-white/70" /></button>
         </header>
         <main className="flex-1 pb-24 md:pb-0 overscroll-none">
