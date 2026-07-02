@@ -84,7 +84,7 @@ export default function Layout() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white">
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
         <div className="w-8 h-8 border-4 border-robur-gold/30 border-t-robur-gold rounded-full animate-spin" />
       </div>
     );
@@ -96,13 +96,13 @@ export default function Layout() {
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col">
-        <header className="sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between shadow-lg">
+        <header className="sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between shadow-lg select-none" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <RoburLogo dark />
-          <button onClick={logout} className="text-white/70 hover:text-white">
+          <button onClick={logout} aria-label="Sign out" className="text-white/70 hover:text-white">
             <LogOut className="w-5 h-5" />
           </button>
         </header>
-        <main className="flex-1 pb-20">
+        <main className="flex-1 pb-20 overscroll-none">
           <AnimatePresence mode="wait">
             <Outlet key={location.pathname} />
           </AnimatePresence>
@@ -118,7 +118,7 @@ export default function Layout() {
         <div className="px-5 py-5 border-b border-white/10">
           <RoburLogo dark />
         </div>
-        <nav className="flex-1 p-3 space-y-4 overflow-y-auto no-scrollbar">
+        <nav className="flex-1 p-3 space-y-4 overflow-y-auto no-scrollbar select-none">
           {adminNavGroups.map((group) => (
             <div key={group.label}>
               <div className="px-4 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/30">{group.label}</div>
@@ -155,17 +155,17 @@ export default function Layout() {
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
-        <header className="md:hidden sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between">
+        <header className="md:hidden sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between select-none" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <RoburLogo dark />
-          <button onClick={logout}><LogOut className="w-5 h-5 text-white/70" /></button>
+          <button onClick={logout} aria-label="Sign out"><LogOut className="w-5 h-5 text-white/70" /></button>
         </header>
-        <main className="flex-1 pb-24 md:pb-0">
+        <main className="flex-1 pb-24 md:pb-0 overscroll-none">
           <AnimatePresence mode="wait">
             <Outlet key={location.pathname} />
           </AnimatePresence>
         </main>
         {/* Mobile bottom nav */}
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-slate-200 flex px-1 py-2 no-scrollbar overflow-x-auto">
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-background border-t border-border flex px-1 py-2 no-scrollbar overflow-x-auto select-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
           {mobileNav.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             return (

@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 
 export default function StepHeader({ title, subtitle, stepIndex, totalSteps, onBack }) {
   return (
-    <div className="mb-5">
+    <div className="mb-5 select-none">
       <div className="flex items-center gap-3 mb-3">
         {onBack && (
           <button onClick={onBack} className="p-2 -ml-2 text-slate-500">

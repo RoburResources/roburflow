@@ -162,7 +162,7 @@ export default function DriverCapture() {
 
   const wrap = (children) => <div className="p-4 max-w-lg mx-auto pb-28">{children}</div>;
   const bottomBar = (label, onClick, disabled) => (
-    <div className="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-3 max-w-lg mx-auto">
+    <div className="fixed bottom-0 inset-x-0 bg-background border-t border-border p-3 max-w-lg mx-auto" style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}>
       <Button onClick={onClick} disabled={disabled} className="w-full h-12 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
         {label} <ChevronRight className="w-5 h-5 ml-1" />
       </Button>
@@ -213,9 +213,9 @@ export default function DriverCapture() {
   if (step === STEPS.MATERIAL) {
     return wrap(<>
       <StepHeader title="Photograph the Material" subtitle="Captures location & time" stepIndex={2} totalSteps={9} onBack={() => setStep(STEPS.NAV_SITE)} />
-      <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+      <div className="bg-background rounded-2xl p-4 border border-border shadow-sm">
         <div className="flex items-center gap-2 mb-3"><Camera className="w-4 h-4 text-robur-goldDark" /><h3 className="font-bold text-sm">Material photo</h3></div>
-        <p className="text-xs text-slate-500 mb-3">Take a clear photo of the material at the site.</p>
+        <p className="text-xs text-muted-foreground mb-3">Take a clear photo of the material at the site.</p>
         <PhotoCapture photos={materialPhotos} onChange={onMaterialChange} />
         {meta.material?.latitude && <p className="text-[11px] text-slate-400 mt-2">📍 Location & time captured</p>}
       </div>
@@ -228,7 +228,7 @@ export default function DriverCapture() {
     return wrap(<>
       <StepHeader title="Service Docket" subtitle="Show this to the client" stepIndex={3} totalSteps={9} onBack={() => setStep(STEPS.MATERIAL)} />
       <DocketPreview job={job} evidencePhoto={materialPhotos[0]} />
-      <div className="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-3 max-w-lg mx-auto">
+      <div className="fixed bottom-0 inset-x-0 bg-background border-t border-border p-3 max-w-lg mx-auto" style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}>
         <Button onClick={() => setStep(STEPS.SIGNATURE)} className="w-full h-12 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold">
           Client Accepts — Sign <ChevronRight className="w-5 h-5 ml-1" />
         </Button>
@@ -242,7 +242,7 @@ export default function DriverCapture() {
       <>
         <LandscapeSignature ackName={ackName} onAckNameChange={setAckName} onSave={setSignatureUrl} saved={!!signatureUrl} />
         {signatureUrl && (
-          <div className="fixed bottom-4 inset-x-4 z-[60] max-w-lg mx-auto">
+          <div className="fixed inset-x-4 z-[60] max-w-lg mx-auto" style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
             <Button onClick={() => setStep(STEPS.RESUME)} className="w-full h-12 bg-robur-black hover:bg-black text-white font-bold">
               Done — Return Phone to Driver
             </Button>
@@ -256,7 +256,7 @@ export default function DriverCapture() {
   if (step === STEPS.RESUME) {
     return wrap(<>
       <StepHeader title="Verify It's You" subtitle="Confirm the driver has the device" stepIndex={5} totalSteps={9} onBack={() => setStep(STEPS.PREVIEW)} />
-      <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+      <div className="bg-background rounded-2xl p-6 border border-border shadow-sm">
         <FaceScan onVerified={() => setStep(STEPS.NAV_BRIDGE)} />
       </div>
     </>);
@@ -275,9 +275,9 @@ export default function DriverCapture() {
   if (step === STEPS.FLOOR) {
     return wrap(<>
       <StepHeader title="Material on Floor" subtitle="Internal use only" stepIndex={7} totalSteps={9} onBack={() => setStep(STEPS.NAV_BRIDGE)} />
-      <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
-        <div className="flex items-center gap-2 mb-3"><Lock className="w-4 h-4 text-slate-500" /><h3 className="font-bold text-sm">Delivery photo</h3></div>
-        <p className="text-xs text-slate-500 mb-3">Photograph the material on the floor. This is kept internal and never shown to the client.</p>
+      <div className="bg-background rounded-2xl p-4 border border-border shadow-sm">
+        <div className="flex items-center gap-2 mb-3"><Lock className="w-4 h-4 text-muted-foreground" /><h3 className="font-bold text-sm">Delivery photo</h3></div>
+        <p className="text-xs text-muted-foreground mb-3">Photograph the material on the floor. This is kept internal and never shown to the client.</p>
         <PhotoCapture photos={floorPhotos} onChange={onFloorChange} />
       </div>
       {bottomBar("Scan Weighbridge Docket", () => setStep(STEPS.WEIGHBRIDGE), floorPhotos.length === 0)}
@@ -306,7 +306,7 @@ export default function DriverCapture() {
         </div>
       ))}
 
-      <div className="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-3 max-w-lg mx-auto">
+      <div className="fixed bottom-0 inset-x-0 bg-background border-t border-border p-3 max-w-lg mx-auto" style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}>
         <Button onClick={submit} disabled={submitting} className="w-full h-12 bg-robur-black hover:bg-black text-white font-bold">
           {submitting ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Submitting…</> : <><Send className="w-5 h-5 mr-2" /> Submit Job</>}
         </Button>
