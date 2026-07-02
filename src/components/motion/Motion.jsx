@@ -56,7 +56,7 @@ export const Pressable = ({ children, className = "", ...props }) => (
     whileHover={{ y: -2 }}
     whileTap={{ scale: 0.98 }}
     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-    className={`group/pressable relative rounded-2xl transition-colors duration-200 hover:bg-white/30 ${className}`}
+    className={`group/pressable relative rounded-2xl transition-colors duration-200 hover:bg-slate-50 ${className}`}
     {...props}
   >
     {children}

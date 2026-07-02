@@ -20,7 +20,7 @@ export default function AdminGlassToolbar({ groups, user, onLogout, expanded, on
       }`}
     >
       {/* Brand */}
-      <div className="flex items-center h-14 px-3 shrink-0 border-b border-white/40">
+      <div className="flex items-center h-14 px-3 shrink-0 border-b border-slate-100">
         <div className="w-11 flex justify-center shrink-0">
           <RoburLogo showText={false} className="!h-7" />
         </div>
@@ -53,7 +53,7 @@ export default function AdminGlassToolbar({ groups, user, onLogout, expanded, on
                       className={`flex items-center gap-3 h-10 px-3 rounded-xl text-sm font-medium transition-colors duration-200 ${
                         active
                           ? "bg-robur-gold text-robur-black shadow-sm"
-                          : "text-slate-600 hover:bg-white/50 hover:text-robur-black"
+                          : "text-slate-600 hover:bg-slate-100 hover:text-robur-black"
                       }`}
                     >
                       <item.icon className="w-5 h-5 shrink-0" strokeWidth={active ? 2 : 1.5} />
@@ -74,7 +74,7 @@ export default function AdminGlassToolbar({ groups, user, onLogout, expanded, on
       </nav>
 
       {/* Footer */}
-      <div className="p-2.5 border-t border-white/40 shrink-0">
+      <div className="p-2.5 border-t border-slate-100 shrink-0">
         <div
           className={`px-3 pb-1.5 text-xs text-slate-500 truncate transition-opacity duration-200 ${
             expanded ? "opacity-100" : "opacity-0 h-0 pb-0 overflow-hidden"
@@ -88,7 +88,7 @@ export default function AdminGlassToolbar({ groups, user, onLogout, expanded, on
           whileHover={{ x: 2 }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          className="flex items-center gap-3 h-10 px-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-white/50 hover:text-robur-black w-full transition-colors duration-200"
+          className="flex items-center gap-3 h-10 px-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-robur-black w-full transition-colors duration-200"
         >
           <LogOut className="w-5 h-5 shrink-0" strokeWidth={1.5} />
           <span
