@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import RoburLogo from "@/components/brand/RoburLogo";
@@ -113,7 +113,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex">
       {/* Floating glass toolbar — sits inset, in line with the main cards, expands on hover */}
-      <div className="hidden md:block fixed left-4 top-6 bottom-6 z-30 pointer-events-none">
+      <div className="hidden md:block fixed left-2 top-6 bottom-6 z-30 pointer-events-none">
         <div className="h-full max-h-[calc(100vh-3rem)] pointer-events-auto">
           <AdminGlassToolbar
             groups={adminNavGroups}
@@ -125,7 +125,11 @@ export default function Layout() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col min-w-0 md:pl-[92px]">
+      <div
+        className={`flex-1 flex flex-col min-w-0 transition-[padding-left] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          navExpanded ? "md:pl-[272px]" : "md:pl-[80px]"
+        }`}
+      >
         {/* Mobile top bar */}
         <header className="md:hidden sticky top-0 z-20 bg-robur-black text-white px-4 py-3 flex items-center justify-between select-none" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <RoburLogo showText={false} />
@@ -141,12 +145,14 @@ export default function Layout() {
           {mobileNav.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             return (
-              <Link key={item.to} to={item.to} className="flex flex-col items-center gap-0.5 px-3 py-1 min-w-[56px]">
-                <item.icon className={`w-5 h-5 ${active ? "text-robur-gold" : "text-slate-400"}`} />
-                <span className={`text-[10px] ${active ? "text-robur-black font-semibold" : "text-slate-400"}`}>
-                  {item.label}
-                </span>
-              </Link>
+              <motion.div key={item.to} whileTap={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
+                <Link to={item.to} className="flex flex-col items-center gap-0.5 px-3 py-1 min-w-[56px]">
+                  <item.icon className={`w-5 h-5 transition-colors ${active ? "text-robur-gold" : "text-slate-400"}`} strokeWidth={active ? 2 : 1.5} />
+                  <span className={`text-[10px] transition-colors ${active ? "text-robur-black font-semibold" : "text-slate-400"}`}>
+                    {item.label}
+                  </span>
+                </Link>
+              </motion.div>
             );
           })}
         </nav>

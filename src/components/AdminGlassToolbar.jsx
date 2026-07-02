@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import RoburLogo from "@/components/brand/RoburLogo";
 import { LogOut } from "lucide-react";
 
 // Floating, hover-expanding glassmorphism toolbar for the admin desktop shell.
 // Collapsed = slim icon-only rail. On hover it expands to reveal group labels
-// and item labels; the parent shell reserves the collapsed width so expansion
-// overlays/pushes the page content aside.
+// and item labels. Icons use thin 1.5 stroke (2 when active) for a sleek,
+// minimal Swiss look. Hover = lighter overlay; active = opaque gold fill.
 export default function AdminGlassToolbar({ groups, user, onLogout, expanded, onExpandedChange }) {
   const location = useLocation();
 
@@ -40,25 +41,31 @@ export default function AdminGlassToolbar({ groups, user, onLogout, expanded, on
               {group.items.map((item) => {
                 const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
                 return (
-                  <Link
+                  <motion.div
                     key={item.to}
-                    to={item.to}
-                    title={item.label}
-                    className={`flex items-center gap-3 h-10 px-3 rounded-xl text-sm font-medium transition-colors ${
-                      active
-                        ? "bg-robur-gold text-robur-black"
-                        : "text-slate-600 hover:bg-white/60 hover:text-robur-black"
-                    }`}
+                    whileHover={{ x: 2 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   >
-                    <item.icon className="w-5 h-5 shrink-0" />
-                    <span
-                      className={`whitespace-nowrap transition-opacity duration-200 ${
-                        expanded ? "opacity-100" : "opacity-0"
+                    <Link
+                      to={item.to}
+                      title={item.label}
+                      className={`flex items-center gap-3 h-10 px-3 rounded-xl text-sm font-medium transition-colors duration-200 ${
+                        active
+                          ? "bg-robur-gold text-robur-black shadow-sm"
+                          : "text-slate-600 hover:bg-white/50 hover:text-robur-black"
                       }`}
                     >
-                      {item.label}
-                    </span>
-                  </Link>
+                      <item.icon className="w-5 h-5 shrink-0" strokeWidth={active ? 2 : 1.5} />
+                      <span
+                        className={`whitespace-nowrap transition-opacity duration-200 ${
+                          expanded ? "opacity-100" : "opacity-0"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>
@@ -75,12 +82,15 @@ export default function AdminGlassToolbar({ groups, user, onLogout, expanded, on
         >
           {user?.email}
         </div>
-        <button
+        <motion.button
           onClick={onLogout}
           title="Sign Out"
-          className="flex items-center gap-3 h-10 px-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-white/60 hover:text-robur-black w-full"
+          whileHover={{ x: 2 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          className="flex items-center gap-3 h-10 px-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-white/50 hover:text-robur-black w-full transition-colors duration-200"
         >
-          <LogOut className="w-5 h-5 shrink-0" />
+          <LogOut className="w-5 h-5 shrink-0" strokeWidth={1.5} />
           <span
             className={`whitespace-nowrap transition-opacity duration-200 ${
               expanded ? "opacity-100" : "opacity-0"
@@ -88,7 +98,7 @@ export default function AdminGlassToolbar({ groups, user, onLogout, expanded, on
           >
             Sign Out
           </span>
-        </button>
+        </motion.button>
       </div>
     </div>
   );

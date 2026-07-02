@@ -49,13 +49,14 @@ export const StaggerItem = ({ children, className = "" }) => (
   </motion.div>
 );
 
-// Tactile press wrapper for cards / list rows.
+// Tactile press wrapper for cards / list rows — lifts and lightens on hover
+// so the whole app signals "you're selecting this item" consistently.
 export const Pressable = ({ children, className = "", ...props }) => (
   <motion.div
     whileHover={{ y: -2 }}
     whileTap={{ scale: 0.98 }}
     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-    className={className}
+    className={`group/pressable relative rounded-2xl transition-colors duration-200 hover:bg-white/30 ${className}`}
     {...props}
   >
     {children}
