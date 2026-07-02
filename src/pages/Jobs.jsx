@@ -40,9 +40,9 @@ export default function Jobs() {
   return (
     <PageTransition className="p-4 md:p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-extrabold text-robur-black">Jobs</h1>
+        <h1 className="text-2xl font-extrabold text-foreground tracking-tighter">Jobs</h1>
         <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-          <Link to="/jobs/new" className="inline-flex items-center gap-2 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold px-4 py-2.5 rounded-xl">
+          <Link to="/jobs/new" className="cta-aurora inline-flex items-center gap-2 text-robur-black font-bold px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <Plus className="w-5 h-5" /> New Job
           </Link>
         </motion.div>
@@ -84,8 +84,8 @@ export default function Jobs() {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-robur-black truncate">{job.client_name}</span>
-                    <span className="text-xs text-slate-400">{job.job_no}</span>
+                    <span className="font-semibold text-foreground truncate">{job.client_name}</span>
+                    <span className="text-xs text-slate-400 tabular-mono">{job.job_no}</span>
                   </div>
                   <p className="text-sm text-slate-500 truncate">{job.site_address || "No site address"}</p>
                   <p className="text-xs text-slate-400 mt-1">

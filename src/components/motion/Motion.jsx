@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 // Tuned spring/ease values give a smooth, tactile, high-end feel.
 
 const EASE = [0.22, 1, 0.36, 1]; // gentle "ease-out-expo" style
+// High-stiffness / low-damping spring — tactile, physics-based reveals.
+const SPRING = { type: "spring", stiffness: 300, damping: 25 };
 
 // Page-level entrance: subtle fade + rise.
 export const PageTransition = ({ children, className = "" }) => (
@@ -19,7 +21,7 @@ export const PageTransition = ({ children, className = "" }) => (
   </motion.div>
 );
 
-// Container that staggers its children in sequence.
+// Container that staggers its children in sequence (50ms cadence).
 export const Stagger = ({ children, className = "", delay = 0.05 }) => (
   <motion.div
     className={className}
@@ -27,19 +29,19 @@ export const Stagger = ({ children, className = "", delay = 0.05 }) => (
     animate="show"
     variants={{
       hidden: {},
-      show: { transition: { staggerChildren: 0.06, delayChildren: delay } },
+      show: { transition: { staggerChildren: 0.05, delayChildren: delay } },
     }}
   >
     {children}
   </motion.div>
 );
 
-// A single item inside a Stagger (or standalone reveal).
+// A single item inside a Stagger (or standalone reveal) — spring-based.
 export const StaggerItem = ({ children, className = "" }) => (
   <motion.div
     variants={{
       hidden: { opacity: 0, y: 16 },
-      show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
+      show: { opacity: 1, y: 0, transition: SPRING },
     }}
     className={className}
   >

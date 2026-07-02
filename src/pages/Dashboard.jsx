@@ -12,10 +12,10 @@ import PullToRefreshIndicator from "@/components/shared/PullToRefreshIndicator";
 
 function Stat({ icon: Icon, label, value }) {
   return (
-    <Pop className="glass-card p-4">
-      <Icon className="w-6 h-6 text-robur-gold mb-3" />
-      <div className="text-2xl font-extrabold text-robur-black">{value}</div>
-      <div className="text-xs text-slate-500 mt-0.5">{label}</div>
+    <Pop className="glass-card glass-lift p-4">
+      <Icon className="w-6 h-6 text-slate-400 mb-3" />
+      <div className="text-2xl font-semibold text-foreground tabular-mono">{value}</div>
+      <div className="text-xs text-muted-foreground mt-0.5 font-medium">{label}</div>
     </Pop>
   );
 }
@@ -46,11 +46,11 @@ export default function Dashboard() {
     <PageTransition className="p-4 md:p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-robur-black">Dashboard</h1>
-          <p className="text-sm text-slate-500">{format(new Date(), "EEEE, d MMMM yyyy")}</p>
+          <h1 className="text-2xl font-extrabold text-foreground tracking-tighter">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">{format(new Date(), "EEEE, d MMMM yyyy")}</p>
         </div>
         <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-          <Link to="/jobs/new" className="inline-flex items-center gap-2 bg-robur-gold hover:bg-robur-goldDark text-robur-black font-bold px-4 py-2.5 rounded-xl transition-colors">
+          <Link to="/jobs/new" className="cta-aurora inline-flex items-center gap-2 text-robur-black font-bold px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <Plus className="w-5 h-5" /> New Job
           </Link>
         </motion.div>
@@ -68,7 +68,7 @@ export default function Dashboard() {
       <DispatchBoard />
 
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-bold text-robur-black">Today's Jobs</h2>
+        <h2 className="text-lg font-semibold text-foreground tracking-tight">Today's Jobs</h2>
         <Link to="/jobs" className="text-sm text-robur-goldDark font-semibold">View all</Link>
       </div>
 

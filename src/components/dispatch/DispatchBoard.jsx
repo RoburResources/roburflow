@@ -117,7 +117,7 @@ function DispatchColumn({ id, title, subtitle, jobs, tone }) {
               <div className="font-bold text-sm text-robur-black truncate">{title}</div>
               <div className="text-[10px] text-slate-400 truncate">{subtitle}</div>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-robur-gold text-robur-black">
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-robur-gold text-robur-black tabular-mono">
               {jobs.length}
             </span>
           </div>
@@ -136,7 +136,7 @@ function DispatchColumn({ id, title, subtitle, jobs, tone }) {
                     ref={prov.innerRef}
                     {...prov.draggableProps}
                     {...prov.dragHandleProps}
-                    className={`bg-white/60 backdrop-blur-md rounded-lg p-2.5 transition-shadow ${snap.isDragging ? "shadow-lg" : "shadow-sm"}`}
+                    className={`glass-card glass-lift rounded-lg p-2.5 ${snap.isDragging ? "shadow-lg" : ""}`}
                   >
                     <div className="flex items-start gap-1.5">
                       <GripVertical className="w-3.5 h-3.5 text-slate-300 mt-0.5 shrink-0" />

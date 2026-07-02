@@ -114,7 +114,7 @@ export default function Layout() {
         <div className="px-5 py-5 border-b border-white/10">
           <RoburLogo dark />
         </div>
-        <nav className="flex-1 p-3 space-y-4 overflow-y-auto no-scrollbar select-none">
+        <nav className="flex-1 p-3 space-y-4 overflow-y-auto thin-scroll fade-edges select-none">
           {adminNavGroups.map((group) => (
             <div key={group.label}>
               <div className="px-4 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/30">{group.label}</div>
@@ -161,7 +161,7 @@ export default function Layout() {
           </AnimatePresence>
         </main>
         {/* Mobile bottom nav */}
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-background border-t border-border flex justify-around px-1 py-2 select-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 glass-heavy rounded-none flex justify-around px-1 py-2 select-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
           {mobileNav.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             return (

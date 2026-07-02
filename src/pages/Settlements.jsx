@@ -95,8 +95,8 @@ export default function Settlements() {
 
   return (
     <div className="p-4 md:p-8 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-extrabold text-robur-black mb-1">Daily Settlement Summary</h1>
-      <p className="text-sm text-slate-500 mb-6">Aggregate completed tickets into a payment summary for a client.</p>
+      <h1 className="text-2xl font-extrabold text-foreground mb-1 tracking-tighter">Daily Settlement Summary</h1>
+      <p className="text-sm text-muted-foreground mb-6">Aggregate completed tickets into a payment summary for a client.</p>
 
       <div className="glass-card p-5 mb-5">
         <div className="grid grid-cols-2 gap-4 mb-4">
@@ -132,9 +132,9 @@ export default function Settlements() {
               <div className="grid grid-cols-2 gap-2">
                 <Input value={it.ref} onChange={(e) => updateItem(i, "ref", e.target.value)} placeholder="Ref" className="h-10 text-sm" />
                 <Input value={it.material} onChange={(e) => updateItem(i, "material", e.target.value)} placeholder="Material" className="h-10 text-sm" />
-                <Input value={it.net_weight} onChange={(e) => updateItem(i, "net_weight", e.target.value)} placeholder="Net (t)" className="h-10 text-sm" />
-                <Input value={it.rate} onChange={(e) => updateItem(i, "rate", e.target.value)} placeholder="Rate" className="h-10 text-sm" />
-                <Input value={it.amount} onChange={(e) => updateItem(i, "amount", e.target.value)} placeholder="Amount (AUD)" className="h-10 text-sm" />
+                <Input value={it.net_weight} onChange={(e) => updateItem(i, "net_weight", e.target.value)} placeholder="Net (t)" className="h-10 text-sm tabular-mono" />
+                <Input value={it.rate} onChange={(e) => updateItem(i, "rate", e.target.value)} placeholder="Rate" className="h-10 text-sm tabular-mono" />
+                <Input value={it.amount} onChange={(e) => updateItem(i, "amount", e.target.value)} placeholder="Amount (AUD)" className="h-10 text-sm tabular-mono" />
                 <button onClick={() => removeItem(i)} className="flex items-center justify-center text-red-500 bg-white/50 rounded-md h-10"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
