@@ -1,0 +1,41 @@
+{
+  "name": "NumberSequence",
+  "type": "object",
+  "properties": {
+    "sequence": {
+      "type": "string",
+      "description": "Independent sequence key: dmt, mgt, or dss"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "Human prefix used in the issued number e.g. DMT, MGT, DSS"
+    },
+    "last_issued": {
+      "type": "number",
+      "default": 0,
+      "description": "Highest number that has actually been committed/issued for this sequence"
+    },
+    "last_reserved": {
+      "type": "number",
+      "default": 0,
+      "description": "Highest number that has been reserved (>= last_issued). Reservations advance this; commits advance last_issued."
+    },
+    "baseline_verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Fail-closed gate. Production numbers cannot be released until the last-issued baseline is verified against historical records."
+    },
+    "baseline_note": {
+      "type": "string",
+      "description": "How the baseline was established / verified"
+    },
+    "lock_version": {
+      "type": "number",
+      "default": 0,
+      "description": "Optimistic concurrency token. Every state mutation increments this; a compare-and-set mismatch means a concurrent writer won and the caller retries."
+    }
+  },
+  "required": [
+    "sequence"
+  ]
+}

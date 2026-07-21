@@ -1,0 +1,50 @@
+{
+  "name": "NumberReservation",
+  "type": "object",
+  "properties": {
+    "sequence": {
+      "type": "string",
+      "description": "Which sequence this receipt belongs to: dmt, mgt, dss"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Caller-supplied deterministic key. Repeated requests with the same key return the same reserved number (no reuse, no double-spend)."
+    },
+    "number": {
+      "type": "number",
+      "description": "The numeric value reserved for this key"
+    },
+    "formatted": {
+      "type": "string",
+      "description": "The formatted issued number e.g. DMT 0005"
+    },
+    "event": {
+      "type": "string",
+      "enum": [
+        "reserve",
+        "commit"
+      ],
+      "description": "Append-only audit event type. 'reserve' when the number is allocated, 'commit' when the document is finalised against it."
+    },
+    "actor_email": {
+      "type": "string",
+      "description": "Authenticated user who triggered the event"
+    },
+    "actor_name": {
+      "type": "string"
+    },
+    "job_id": {
+      "type": "string",
+      "description": "Optional job this reservation relates to"
+    },
+    "detail": {
+      "type": "string",
+      "description": "Free-text audit note"
+    }
+  },
+  "required": [
+    "sequence",
+    "idempotency_key",
+    "event"
+  ]
+}
