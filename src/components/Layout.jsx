@@ -17,7 +17,7 @@ const adminNavGroups = [
     label: "Operations",
     items: [
       { to: "/", label: "Dashboard", icon: LayoutDashboard },
-      { to: "/scan-job", label: "Scan a Job", icon: ScanLine },
+      { to: "/scan-documents", label: "Scan & Extract", icon: ScanLine },
       { to: "/jobs", label: "Jobs", icon: ListChecks },
       { to: "/dispatch-calendar", label: "Dispatch Calendar", icon: CalendarDays },
       { to: "/review", label: "Review", icon: FileText },

@@ -28,13 +28,14 @@ export default function ScanDocuments() {
     }
     setScanning(true);
     try {
-      const { data } = await base44.functions.extractDocketData({
+      const res = await base44.functions.invoke("extractDocketData", {
         fileUrls: files.map((f) => f.url),
-        docs: DOCS.map((d) => ({ docType: d.docType, label: d.label, fields: d.fields })),
+        docs: DOCS.map((d) => ({ docType: d.docType, label: d.label, fields: d.fields.map((f) => ({ key: f.key, label: f.label, type: f.type })) })),
       });
+      const data = res?.data?.data || {};
       // Ensure every doc has an object even if the model omitted one.
       const filled = {};
-      for (const d of DOCS) filled[d.docType] = (data && data[d.docType]) || {};
+      for (const d of DOCS) filled[d.docType] = data[d.docType] || {};
       setExtracted(filled);
       toast({ title: "Data extracted", description: "Review and correct the fields below." });
     } catch (err) {
