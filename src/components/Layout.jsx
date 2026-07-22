@@ -9,7 +9,7 @@ import {
   LayoutDashboard, ListChecks, Users, Truck, FileText, LogOut, Receipt,
   Archive, ScrollText, LayoutTemplate, Settings2, BarChart3, Boxes,
   ShieldAlert, KeyRound, Wrench, Fuel, UserCheck, CalendarDays,
-  ShieldCheck, Wallet, BadgeCheck, AlertTriangle, MessageSquare, BookOpen,
+  ShieldCheck, Wallet, BadgeCheck, AlertTriangle, MessageSquare, BookOpen, ScanLine,
 } from "lucide-react";
 
 const adminNavGroups = [
@@ -17,6 +17,7 @@ const adminNavGroups = [
     label: "Operations",
     items: [
       { to: "/", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/scan-job", label: "Scan a Job", icon: ScanLine },
       { to: "/jobs", label: "Jobs", icon: ListChecks },
       { to: "/dispatch-calendar", label: "Dispatch Calendar", icon: CalendarDays },
       { to: "/review", label: "Review", icon: FileText },

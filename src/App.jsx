@@ -50,6 +50,7 @@ const KnowledgeLibrary = lazy(() => import('@/pages/KnowledgeLibrary'));
 const ComplianceDashboard = lazy(() => import('@/pages/ComplianceDashboard'));
 const DocumentVerification = lazy(() => import('@/pages/DocumentVerification'));
 const ClientPortal = lazy(() => import('@/pages/ClientPortal'));
+const ScanDocuments = lazy(() => import('@/pages/ScanDocuments'));
 
 const PageLoader = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -85,6 +86,7 @@ function App() {
 
                     {/* ---- Admin-only routes ---- */}
                     <Route element={<RoleRoute />}>
+                      <Route path="/scan-documents" element={<ScanDocuments />} />
                       <Route path="/jobs" element={<Jobs />} />
                       <Route path="/jobs/new" element={<JobForm />} />
                       <Route path="/jobs/:id" element={<JobDetail />} />
